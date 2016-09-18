@@ -17,16 +17,18 @@ public class UserBasket {
         this.basketUser = user;
     }
 
-    public int addProduct(Product product) {
-
+    public void addProduct(Product product) {
         this.productsInBasket.add(product);
+    }
 
-        return Constants.OP_ERROR;
-    }
-    public int removeProduct(Product product) {
+    public void removeProduct(Product product) {
         this.productsInBasket.remove(product);
-        return Constants.OP_ERROR;
     }
+
+    public List getProdutsInBasket() {
+        return productsInBasket;
+    }
+
 
     public List getProducts(){
         return this.productsInBasket;

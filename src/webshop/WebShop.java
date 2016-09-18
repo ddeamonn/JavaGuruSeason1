@@ -6,18 +6,16 @@ package webshop;
 public class WebShop {
     public static void main (String[] args) {
         try {
-            Dao db = new DaoSqlite("jdbc:sqlite:src/webshop/dbo/webshop.db");
+            DaoInterface db = new DaoInterfaceSqlite("jdbc:sqlite:src/webshop/dbo/webshop.db");
 
             System.out.println("Opened database successfully");
-            int res = db.addUser("Amir", "123", userRoleType.ADMIN);
 
-            if (res == Constants.OP_SUCCESS) System.out.println("Inserted user");
-            else System.out.println("Not inserted");
-
-            res = db.addProduct("Blender", "Home", 1.35f);
-            if (res == Constants.OP_SUCCESS) System.out.println("Inserted product");
-            else System.out.println("Not inserted");
-
+            try {
+                db.addUser("Amir", "123", userRoleType.ADMIN);
+                db.addProduct("Blender", "Home", 1.35f);
+            } catch (WebShopSqlException e) {
+                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+            }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());
             System.exit(0);
