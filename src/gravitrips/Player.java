@@ -22,7 +22,7 @@ abstract class Player {
         return this.playerName;
     }
 
-    public int getPlayerID() {
+    public int  getPlayerID() {
         return this.playerID;
     }
 
