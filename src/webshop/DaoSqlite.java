@@ -11,9 +11,9 @@ public class DaoSqlite implements Dao {
 
     Connection dbConnection;
 
-    DaoSqlite() throws SQLException, ClassNotFoundException {
+    DaoSqlite(String dbPath) throws SQLException, ClassNotFoundException {
        Class.forName("org.sqlite.JDBC");
-       this.dbConnection = DriverManager.getConnection("jdbc:sqlite:dbo/webshop.db");
+       this.dbConnection = DriverManager.getConnection(dbPath);
     }
 
     @Override

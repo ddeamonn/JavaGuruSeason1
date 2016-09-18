@@ -6,7 +6,7 @@ package webshop;
 public class WebShop {
     public static void main (String[] args) {
         try {
-            DaoSqlite db = new DaoSqlite();
+            Dao db = new DaoSqlite("jdbc:sqlite:src/webshop/dbo/webshop.db");
 
             System.out.println("Opened database successfully");
             int res = db.addUser("Amir", "123", userRoleType.ADMIN);
