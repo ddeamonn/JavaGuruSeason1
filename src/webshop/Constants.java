@@ -7,4 +7,7 @@ public class Constants {
     public static final int OP_SUCCESS = 0;
     public static final int OP_ERROR = 1;
 
+    public static final boolean ENABLED = true;
+    public static final boolean DISABLED = false;
+
 }

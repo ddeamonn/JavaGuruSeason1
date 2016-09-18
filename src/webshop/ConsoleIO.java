@@ -25,4 +25,17 @@ public class ConsoleIO {
         }
 
     }
+
+    public static String getUserInputString() {
+        while (true) {
+            try {
+                Scanner sc = new Scanner(System.in);
+                String number = sc.nextLine();
+                return number;
+            } catch (InputMismatchException e) {
+                ConsoleIO.showMessage("Check your input. Please try again");
+            }
+        }
+
+    }
 }

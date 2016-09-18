@@ -25,10 +25,9 @@ public class UserBasket {
         this.productsInBasket.remove(product);
     }
 
-    public List getProdutsInBasket() {
+    public List getProductsInBasket() {
         return productsInBasket;
     }
-
 
     public List getProducts(){
         return this.productsInBasket;

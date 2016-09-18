@@ -4,14 +4,20 @@ package webshop;
  * Created by Amir on 06.09.2016..
  */
 public class Product {
+    private int productID;
     private String productName;
     private String productCategory;
     private float productPrice;
 
-    public Product(String productName, String productCategory, float productPrice) {
+    public Product(int productID, String productName, String productCategory, float productPrice) {
+        this.productID = productID;
         this.productName = productName;
         this.productCategory = productCategory;
         this.productPrice = productPrice;
+    }
+
+    public int getProductID() {
+        return this.productID;
     }
 
     public String getProductName() {
@@ -24,6 +30,11 @@ public class Product {
 
     public float getProductPrice() {
         return this.productPrice;
+    }
+
+    @Override
+    public String toString() {
+        return (this.productName + " " + this.productCategory + " " + this.productPrice);
     }
 
     @Override
