@@ -9,27 +9,31 @@ import java.util.LinkedList;
 
 public class UserBasket {
 
-    private List<Product> productsInBasket;
+    private HashMap<Product, Integer> productsInBasket;
     private User basketUser;
 
     UserBasket(User user) {
-        this.productsInBasket = new LinkedList<>();
+        this.productsInBasket = new HashMap<>();
         this.basketUser = user;
     }
 
     public void addProduct(Product product) {
-        this.productsInBasket.add(product);
+        if(productsInBasket.containsKey(product)) {
+            this.productsInBasket.put(product, productsInBasket.get(product) + 1);
+        } else {
+            this.productsInBasket.put(product, 1);
+        }
     }
 
     public void removeProduct(Product product) {
         this.productsInBasket.remove(product);
     }
 
-    public List getProductsInBasket() {
+    public HashMap<Product, Integer> getProductsInBasket() {
         return productsInBasket;
     }
 
-    public List getProducts(){
+    public HashMap<Product, Integer> getProducts(){
         return this.productsInBasket;
     }
 

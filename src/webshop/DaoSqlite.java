@@ -1,7 +1,9 @@
 package webshop;
 
+import java.awt.*;
 import java.sql.*;
 import java.util.*;
+import java.util.List;
 
 /**
  * Created by Amir on 06.09.2016..
@@ -227,18 +229,20 @@ public class DaoSqlite implements Dao {
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 
         User buyer = basket.getBasketUser();
-        List products = basket.getProducts();
+        HashMap<Product, Integer> products = basket.getProducts();
+        int saleID = 1;
 
-        Iterator<Product> product = products.iterator();
-
-        while (product.hasNext()) {
+        for (Map.Entry<Product, Integer> product : products.entrySet()) {
             PreparedStatement sqlStatement = null;
-            String sql = "INSERT INTO SALES(DateTime, UserID, ProductID, SaleID) values (?, ?, ?, ?)";
+            String sql = "INSERT INTO SALES(SaleID, DateTime, UserID, ProductID, Quantity, Price) " +
+                    "values (?, ?, ?, ?, ?, ?)";
             sqlStatement = this.dbConnection.prepareStatement(sql);
-            sqlStatement.setDate(1, currentDate);
-            sqlStatement.setInt(2, buyer.getUserID());
-            //sqlStatement.setInt(3, product.getProductID());
-            sqlStatement.setDate(4, currentDate);
+            sqlStatement.setInt(1, saleID);
+            sqlStatement.setDate(2, currentDate);
+            sqlStatement.setInt(3, buyer.getUserID());
+            sqlStatement.setInt(4, product.getKey().getProductID());
+            sqlStatement.setInt(5, product.getValue());
+            sqlStatement.setFloat(6, product.getKey().getProductPrice());
         }
 
     }
