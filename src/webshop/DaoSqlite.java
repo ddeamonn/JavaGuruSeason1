@@ -21,7 +21,7 @@ public class DaoSqlite implements Dao {
     @Override
     public void addUser(String userName, String userPassword, userRoleType userType) throws SQLException {
 
-        if (checkUserExists(userName)) throw new WebShopSqlException("User with this name already exists");
+        if (checkUserExists(userName)) throw new WebShopSqlException("User with name " + userName + " already exists");
 
         PreparedStatement sqlStatement = null;
         String sql = "INSERT INTO USERS(Name, Password, Role) VALUES (?, ?, ?)";
@@ -230,12 +230,13 @@ public class DaoSqlite implements Dao {
 
         User buyer = basket.getBasketUser();
         HashMap<Product, Integer> products = basket.getProducts();
+
         int saleID = 1;
 
         for (Map.Entry<Product, Integer> product : products.entrySet()) {
             PreparedStatement sqlStatement = null;
-            String sql = "INSERT INTO SALES(SaleID, DateTime, UserID, ProductID, Quantity, Price) " +
-                    "values (?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO SALES(SaleID, DateTime, UserID, ProductID, Quantity, Price, SaleSum) " +
+                    "values (?, ?, ?, ?, ?, ?, ?)";
             sqlStatement = this.dbConnection.prepareStatement(sql);
             sqlStatement.setInt(1, saleID);
             sqlStatement.setDate(2, currentDate);
@@ -243,6 +244,9 @@ public class DaoSqlite implements Dao {
             sqlStatement.setInt(4, product.getKey().getProductID());
             sqlStatement.setInt(5, product.getValue());
             sqlStatement.setFloat(6, product.getKey().getProductPrice());
+            sqlStatement.setFloat(7, product.getKey().getProductPrice() * product.getValue());
+
+            sqlStatement.executeUpdate();
         }
     }
 
@@ -251,13 +255,13 @@ public class DaoSqlite implements Dao {
 
         PreparedStatement sqlStatement = null;
 
-        String sql = "SELECT SaleID, SUM() FROM SALES";
+        String sql = "SELECT SaleID as SID, SUM(SaleSum) as Sum FROM SALES GROUP BY SaleID";
         sqlStatement = this.dbConnection.prepareStatement(sql);
 
         ResultSet result = sqlStatement.executeQuery();
         while (result.next()) {
-            int querySaleID = result.getInt("SaleID");
-            float querySaleSum = result.getFloat("");
+            int querySaleID = result.getInt("SID");
+            float querySaleSum = result.getFloat("Sum");
         }
 
         return null;
@@ -265,3 +269,4 @@ public class DaoSqlite implements Dao {
     }
 
 }
+
