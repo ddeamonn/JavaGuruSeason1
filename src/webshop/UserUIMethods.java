@@ -17,12 +17,17 @@ public class UserUIMethods implements ClientMethodsInterface, AdminMethodsInterf
     Dao dbo;
     User currentUser;
 
+    public UserUIMethods(String dbConnectionString) throws SQLException, ClassNotFoundException {
+        this.dbo = new DaoSqlite(dbConnectionString);
+    }
+
     public static List allowedMethods(User user) {
 
         List<String> allowedMethods = new LinkedList<>();
 
         allowedMethods.add("Login user");
         allowedMethods.add("Login logout");
+        allowedMethods.add("Show products in catalog");
         allowedMethods.add("Add product to basket");
         allowedMethods.add("Remove product from basket");
         allowedMethods.add("Buy products in basket");
@@ -38,10 +43,6 @@ public class UserUIMethods implements ClientMethodsInterface, AdminMethodsInterf
         }
 
         return allowedMethods;
-    }
-
-    public UserUIMethods(String dbConnectionString) throws SQLException, ClassNotFoundException {
-        this.dbo = new DaoSqlite(dbConnectionString);
     }
 
     public User userLogin(String userName, String userPassword) throws SQLException {

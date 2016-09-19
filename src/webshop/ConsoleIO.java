@@ -41,7 +41,7 @@ public class ConsoleIO {
         List<String> methods = UserUIMethods.allowedMethods(user);
         int i = 1;
 
-        ConsoleIO.showMessage("==== User Menu ====");
+        ConsoleIO.showMessage("======== User Menu ========");
 
         for(String method : methods){
             ConsoleIO.showMessage(i + " - " + method);
@@ -55,7 +55,7 @@ public class ConsoleIO {
     public static String[] showLoginForm(){
 
         String[] loginForm = new String[2];
-        ConsoleIO.showMessage("==== LOGIN FORM ====");
+        ConsoleIO.showMessage("======== LOGIN FORM ========");
         ConsoleIO.showMessage("Please enter your login: ");
         loginForm[0] = ConsoleIO.getUserInputString();
         ConsoleIO.showMessage("Please enter your password: ");

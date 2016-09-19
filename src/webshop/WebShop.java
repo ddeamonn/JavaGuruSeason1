@@ -14,13 +14,17 @@ public class WebShop {
                 //db.addUser("Amir", "123", userRoleType.ADMIN);
                 //db.addUser("Anonymous", "321123", userRoleType.USER);
                 //db.addProduct("Blender", "Home", 1.35f);
-                User usr = null;
 
-                while(usr == null) {
-                    String[] creds = ConsoleIO.showLoginForm();
-                    usr = db.getUser(creds[0], creds[1]);
-                    if (usr == null) ConsoleIO.showMessage("Login failed. Please try again");
+                User usr = db.getUser("Anonymous", "321123");
+
+                if (false) {
+                    while (usr.getUserName() == Constants.USER_ANONYMOUS) {
+                        String[] creds = ConsoleIO.showLoginForm();
+                        usr = db.getUser(creds[0], creds[1]);
+                        if (usr == null) ConsoleIO.showMessage("Login failed. Please try again");
+                    }
                 }
+
                 ConsoleIO.showMessage("Welcome " + usr.getUserName());
                 ConsoleIO.showUserMenu(usr);
 

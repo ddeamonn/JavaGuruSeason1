@@ -10,4 +10,6 @@ public class Constants {
     public static final boolean ENABLED = true;
     public static final boolean DISABLED = false;
 
+    public static final String USER_ANONYMOUS = "Anonymous";
+
 }
