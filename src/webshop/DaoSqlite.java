@@ -244,7 +244,6 @@ public class DaoSqlite implements Dao {
             sqlStatement.setInt(5, product.getValue());
             sqlStatement.setFloat(6, product.getKey().getProductPrice());
         }
-
     }
 
     @Override

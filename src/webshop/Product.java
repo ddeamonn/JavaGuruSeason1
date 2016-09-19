@@ -44,15 +44,17 @@ public class Product {
 
         Product product = (Product) o;
 
-        if (!productName.equals(product.productName)) return false;
-        return productCategory.equals(product.productCategory);
+        if (productID != product.productID) return false;
+        if (productName != null ? !productName.equals(product.productName) : product.productName != null) return false;
+        return productCategory != null ? productCategory.equals(product.productCategory) : product.productCategory == null;
 
     }
 
     @Override
     public int hashCode() {
-        int result = productName.hashCode();
-        result = 31 * result + productCategory.hashCode();
+        int result = productID;
+        result = 31 * result + (productName != null ? productName.hashCode() : 0);
+        result = 31 * result + (productCategory != null ? productCategory.hashCode() : 0);
         return result;
     }
 }
