@@ -27,18 +27,19 @@ public class WebShop {
                 User usr = db.getUser("Anonymous", "321123");
 
                 if (false) {
+*/
+                User usr = db.getUser("Anonymous", "321123");
                     while (usr.getUserName() == Constants.USER_ANONYMOUS) {
                         String[] creds = ConsoleIO.showLoginForm();
                         usr = db.getUser(creds[0], creds[1]);
                         if (usr == null) ConsoleIO.showMessage("Login failed. Please try again");
+
                     }
-                }
+                //}
+
 
                 ConsoleIO.showMessage("Welcome " + usr.getUserName());
-*/
-
-                User usr = db.getUser("Anonymous", "321123");
-
+/*
                 UserBasket basket = new UserBasket(usr);
 
                 basket.addProduct(db.getProductByName("Mixer"));
@@ -49,9 +50,8 @@ public class WebShop {
                 //basket.removeProduct(db.getProductByName("Mixer"));
 
                 db.buyProductsFromBasket(basket);
-
-
-                // ConsoleIO.showUserMenu(usr);
+*/
+                ConsoleIO.showUserMenu(usr);
 
             } catch (WebShopSqlException e) {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());

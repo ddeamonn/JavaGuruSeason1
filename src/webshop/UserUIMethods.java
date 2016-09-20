@@ -1,10 +1,7 @@
 package webshop;
 
-import org.omg.CORBA.UnknownUserException;
-
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -21,25 +18,27 @@ public class UserUIMethods implements ClientMethodsInterface, AdminMethodsInterf
         this.dbo = new DaoSqlite(dbConnectionString);
     }
 
-    public static List allowedMethods(User user) {
+    public static HashMap<Integer, String> allowedMethods(User user) {
 
-        List<String> allowedMethods = new LinkedList<>();
+        HashMap<Integer, String> allowedMethods = new HashMap<>();
 
-        allowedMethods.add("Login user");
-        allowedMethods.add("Login logout");
-        allowedMethods.add("Show products in catalog");
-        allowedMethods.add("Add product to basket");
-        allowedMethods.add("Remove product from basket");
-        allowedMethods.add("Buy products in basket");
+        if ((user.getUserRole() == userRoleType.USER) || (user.getUserRole() == userRoleType.ADMIN)) {
+            allowedMethods.put(Constants.LOGIN_USER, "Login user");
+            allowedMethods.put(Constants.LOGOUT_USER, "Login logout");
+            allowedMethods.put(Constants.PRODUCTS_SHOW_IN_CATALOG, "Show products in catalog");
+            allowedMethods.put(Constants.BASKET_ADD_PRODUCT, "Add product to basket");
+            allowedMethods.put(Constants.BASKET_REMOVE_PRODUCT, "Remove product from basket");
+            allowedMethods.put(Constants.BASKET_BUY_PRODUCTS, "Buy products in basket");
+        }
 
         if (user.getUserRole() == userRoleType.ADMIN) {
-            allowedMethods.add("Add new product to catalog");
-            allowedMethods.add("Disable product in catalog");
-            allowedMethods.add("Enable product in catalog");
-            allowedMethods.add("Change product price in catalog");
-            allowedMethods.add("Add user to webshop");
-            allowedMethods.add("Enable user in webshop");
-            allowedMethods.add("Disable user in webshop");
+            allowedMethods.put(Constants.CATALOG_ADD_PRODUCT, "Add new product to catalog");
+            allowedMethods.put(Constants.CATALOG_DISABLE_PRODUCT, "Disable product in catalog");
+            allowedMethods.put(Constants.CATALOG_ENABLE_PRODUCT, "Enable product in catalog");
+            allowedMethods.put(Constants.CATALOG_CHANGE_PRODUCT_PRICE, "Change product price in catalog");
+            allowedMethods.put(Constants.USER_ADD_USER, "Add user to webshop database");
+            allowedMethods.put(Constants.USER_ENABLE_USER, "Enable user in webshop database");
+            allowedMethods.put(Constants.USER_DISABLE_USER, "Disable user in webshop database");
         }
 
         return allowedMethods;

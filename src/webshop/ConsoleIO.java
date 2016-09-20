@@ -38,13 +38,13 @@ public class ConsoleIO {
     }
 
     public static void showUserMenu(User user) {
-        List<String> methods = UserUIMethods.allowedMethods(user);
+        HashMap<Integer, String> methods = UserUIMethods.allowedMethods(user);
         int i = 1;
 
         ConsoleIO.showMessage("======== User Menu ========");
 
-        for(String method : methods){
-            ConsoleIO.showMessage(i + " - " + method);
+        for (Map.Entry<Integer, String> method : methods.entrySet()) {
+            ConsoleIO.showMessage(i + " - " + method.getValue());
             i++;
         }
 
