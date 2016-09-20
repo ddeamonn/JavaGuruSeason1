@@ -13,15 +13,15 @@ public class DaoSqlite implements Dao {
 
     Connection dbConnection;
 
-    DaoSqlite(String dbPath) throws SQLException, ClassNotFoundException {
+    DaoSqlite(Connection dbConnection) throws SQLException, ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
-        this.dbConnection = DriverManager.getConnection(dbPath);
+        this.dbConnection = dbConnection;
     }
 
     @Override
     public void addUser(String userName, String userPassword, userRoleType userType) throws SQLException {
 
-        if (checkUserExists(userName)) throw new WebShopSqlException("User with name " + userName + " already exists");
+        //if (checkUserExists(userName)) throw new WebShopSqlException("User with name " + userName + " already exists");
 
         PreparedStatement sqlStatement = null;
         String sql = "INSERT INTO USERS(Name, Password, Role) VALUES (?, ?, ?)";
@@ -41,22 +41,6 @@ public class DaoSqlite implements Dao {
         String sql = "SELECT * FROM USERS WHERE (Name = ?)";
         sqlStatement = this.dbConnection.prepareStatement(sql);
         sqlStatement.setString(1, userName);
-
-        ResultSet result = sqlStatement.executeQuery();
-        if (result.next()) {
-            return true;
-        }
-        return false;
-    }
-
-    @Override
-    public boolean checkProductExists(String productName, String productCategory) throws SQLException {
-
-        PreparedStatement sqlStatement = null;
-        String sql = "SELECT * FROM PRODUCTS WHERE (NAME = ?) AND (CATEGORY = ?)";
-        sqlStatement = this.dbConnection.prepareStatement(sql);
-        sqlStatement.setString(1, productName);
-        sqlStatement.setString(2, productCategory);
 
         ResultSet result = sqlStatement.executeQuery();
         if (result.next()) {
@@ -108,6 +92,22 @@ public class DaoSqlite implements Dao {
         sqlStatement.executeUpdate();
     }
 
+    @Override
+    public boolean checkProductExists(String productName, String productCategory) throws SQLException {
+
+        PreparedStatement sqlStatement = null;
+        String sql = "SELECT * FROM PRODUCTS WHERE (NAME = ?) AND (CATEGORY = ?)";
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        sqlStatement.setString(1, productName);
+        sqlStatement.setString(2, productCategory);
+
+        ResultSet result = sqlStatement.executeQuery();
+        if (result.next()) {
+            return true;
+        }
+        return false;
+    }
+
     public List getProductCategories() throws SQLException {
 
         List<String> categoryList = new LinkedList<>();
@@ -129,7 +129,7 @@ public class DaoSqlite implements Dao {
     @Override
     public void addProduct(String productName, String productCategory, float productPrice) throws SQLException {
 
-        if (checkProductExists(productName, productCategory)) throw new WebShopSqlException("Product already exists");
+        //if (checkProductExists(productName, productCategory)) throw new WebShopSqlException("Product already exists");
 
         PreparedStatement sqlStatement = null;
         String sql = "INSERT INTO Products(Name, Category, Price) VALUES (?, ?, ?)";

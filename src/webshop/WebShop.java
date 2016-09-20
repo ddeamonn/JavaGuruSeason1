@@ -1,55 +1,65 @@
 package webshop;
 
+import java.sql.*;
+
 /**
  * Created by Amir on 06.09.2016..
  */
 public class WebShop {
     public static void main (String[] args) {
         try {
-            Dao db = new DaoSqlite("jdbc:sqlite:src/webshop/dbo/webshop.db");
+            Connection dbConnection = DriverManager.getConnection("jdbc:sqlite:src/webshop/dbo/webshop.db");
+
+            // Dao db = new DaoSqlite(dbConnection);
+
+            UserDao userDb = new SqliteUserDao(dbConnection);
+            ProductDao productDb = new SqliteProductDao(dbConnection);
+            SalesDao saleDb = new SqliteSalesDao(dbConnection);
+
 
             System.out.println("Opened database successfully");
 
             try {
-
 /*
-                db.addUser("Anonymous", "321123", userRoleType.USER);
-                db.addUser("Amir", "111", userRoleType.ADMIN);
-                db.addUser("Amir", "112", userRoleType.ADMIN);
-                db.addUser("Andrej", "222", userRoleType.USER);
-                db.addUser("Aleksej", "333", userRoleType.USER);
+                userDb.addUser("Anonymous", "321123", userRoleType.USER);
+                userDb.addUser("Amir", "111", userRoleType.ADMIN);
+                userDb.addUser("Andrej", "222", userRoleType.USER);
+                userDb.addUser("Aleksej", "333", userRoleType.USER);
 
-                db.addProduct("Blender", "Kitchen Electronics", 35.35f);
-                db.addProduct("Mixer", "Kitchen Electronics", 45.12f);
-                db.addProduct("Samsung TV", "Electronics", 499.99f);
-                db.addProduct("LG TV", "Electronics", 399.99f);
-
-                User usr = db.getUser("Anonymous", "321123");
-
-                if (false) {
+                productDb.addProduct("Blender", "Kitchen Electronics", 35.35f);
+                productDb.addProduct("Mixer", "Kitchen Electronics", 45.12f);
+                productDb.addProduct("Samsung TV", "Electronics", 499.99f);
+                productDb.addProduct("LG TV", "Electronics", 399.99f);
 */
-                User usr = db.getUser("Anonymous", "321123");
-                    while (usr.getUserName() == Constants.USER_ANONYMOUS) {
+                User usr = userDb.getUser("Anonymous", "321123");
+                User usrTenp = null;
+
+                if (true) {
+                    while (usr.getUserName().equals(Constants.USER_ANONYMOUS)) {
                         String[] creds = ConsoleIO.showLoginForm();
-                        usr = db.getUser(creds[0], creds[1]);
-                        if (usr == null) ConsoleIO.showMessage("Login failed. Please try again");
-
+                        usrTenp = userDb.getUser(creds[0], creds[1]);
+                        if (usrTenp == null) ConsoleIO.showMessage("Login failed. Please try again");
+                        else usr = usrTenp;
                     }
-                //}
-
+                }
 
                 ConsoleIO.showMessage("Welcome " + usr.getUserName());
 /*
                 UserBasket basket = new UserBasket(usr);
 
-                basket.addProduct(db.getProductByName("Mixer"));
-                basket.addProduct(db.getProductByName("Blender"));
-                basket.addProduct(db.getProductByName("Samsung TV"));
-                basket.addProduct(db.getProductByName("Mixer"));
+                basket.addProduct(productDb.getProductByName("Mixer"));
+                basket.addProduct(productDb.getProductByName("Blender"));
+                basket.addProduct(productDb.getProductByName("Samsung TV"));
+                basket.addProduct(productDb.getProductByName("Mixer"));
+                basket.addProduct(productDb.getProductByName("Mixer"));
+                basket.addProduct(productDb.getProductByName("Mixer"));
+                basket.addProduct(productDb.getProductByName("Samsung TV"));
+                basket.addProduct(productDb.getProductByName("Blender"));
+                basket.addProduct(productDb.getProductByName("Blender"));
 
-                //basket.removeProduct(db.getProductByName("Mixer"));
+                //basket.removeProduct(productDb.getProductByName("Mixer"));
 
-                db.buyProductsFromBasket(basket);
+                saleDb.buyProductsFromBasket(basket);
 */
                 ConsoleIO.showUserMenu(usr);
 

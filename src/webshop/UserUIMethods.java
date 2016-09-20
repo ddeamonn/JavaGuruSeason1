@@ -1,5 +1,6 @@
 package webshop;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
@@ -11,11 +12,21 @@ import java.util.Map;
 
 public class UserUIMethods implements ClientMethodsInterface, AdminMethodsInterface {
 
-    Dao dbo;
-    User currentUser;
+    private Connection dbo;
 
-    public UserUIMethods(String dbConnectionString) throws SQLException, ClassNotFoundException {
-        this.dbo = new DaoSqlite(dbConnectionString);
+    private UserDao userDao;
+    private ProductDao productDao;
+    private SalesDao salesDao;
+    private ReportDao reportDao;
+
+    private User currentUser;
+
+    public UserUIMethods(Connection dbConnection) throws SQLException, ClassNotFoundException {
+        this.userDao = new SqliteUserDao(dbConnection);
+        this.productDao = new SqliteProductDao(dbConnection);
+        this.salesDao = new SqliteSalesDao(dbConnection);
+        this.reportDao = new SqliteReportDao(dbConnection);
+
     }
 
     public static HashMap<Integer, String> allowedMethods(User user) {
@@ -45,7 +56,7 @@ public class UserUIMethods implements ClientMethodsInterface, AdminMethodsInterf
     }
 
     public User userLogin(String userName, String userPassword) throws SQLException {
-        return this.dbo.getUser(userName, userPassword);
+        return this.userDao.getUser(userName, userPassword);
     }
 
     public void userLogout(User user) {
@@ -70,49 +81,49 @@ public class UserUIMethods implements ClientMethodsInterface, AdminMethodsInterf
     }
 
     public void buyProductsInBasket(UserBasket basket) throws SQLException {
-        dbo.buyProductsFromBasket(basket);
+        salesDao.buyProductsFromBasket(basket);
     }
 
     public void addProductToCatalog(String productName, String productCategory, float productPrice)
             throws SQLException, SecurityException {
         Security.checkRequiredUserPermission(this.currentUser, userRoleType.ADMIN);
-        dbo.addProduct(productName, productCategory, productPrice);
+        productDao.addProduct(productName, productCategory, productPrice);
     }
 
     public void disableProductInCatalog(Product product)
             throws SQLException, SecurityException {
         Security.checkRequiredUserPermission(this.currentUser, userRoleType.ADMIN);
-        dbo.setProductStatusInCatalog(product.getProductID(), Constants.DISABLED);
+        productDao.setProductStatusInCatalog(product.getProductID(), Constants.DISABLED);
     }
 
     public void enableProductInCatalog(Product product)
             throws SQLException, SecurityException {
         Security.checkRequiredUserPermission(this.currentUser, userRoleType.ADMIN);
-        dbo.setProductStatusInCatalog(product.getProductID(), Constants.ENABLED);
+        productDao.setProductStatusInCatalog(product.getProductID(), Constants.ENABLED);
     }
 
     public void changeProductPrice(Product product, float newPrice)
             throws SQLException, SecurityException {
         Security.checkRequiredUserPermission(this.currentUser, userRoleType.ADMIN);
-        dbo.setProductPrice(product.getProductID(), newPrice);
+        productDao.setProductPrice(product.getProductID(), newPrice);
     }
 
     public void disableUser(User user)
             throws SQLException, SecurityException {
         Security.checkRequiredUserPermission(this.currentUser, userRoleType.ADMIN);
-        dbo.updateUser(user, user.getUserName(), user.getUserPassword(), user.getUserRole(), Constants.DISABLED);
+        userDao.updateUser(user, user.getUserName(), user.getUserPassword(), user.getUserRole(), Constants.DISABLED);
     }
 
     public void enableUser(User user)
             throws SQLException, SecurityException {
         Security.checkRequiredUserPermission(this.currentUser, userRoleType.ADMIN);
-        dbo.updateUser(user, user.getUserName(), user.getUserPassword(), user.getUserRole(), Constants.ENABLED);
+        userDao.updateUser(user, user.getUserName(), user.getUserPassword(), user.getUserRole(), Constants.ENABLED);
     }
 
     public void showAllSales()
             throws SQLException, SecurityException {
         Security.checkRequiredUserPermission(this.currentUser, userRoleType.ADMIN);
-        List allSales = dbo.getSalesWithSum();
+        List allSales = reportDao.getSalesWithSum();
     }
 
 }

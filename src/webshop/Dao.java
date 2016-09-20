@@ -29,11 +29,11 @@ public interface Dao {
 
     public boolean checkProductExists(String productName, String productCategory) throws SQLException;
 
+    public void setProductStatusInCatalog(int productID, boolean productStatus) throws SQLException;
+
     public void addProductToBasket(UserBasket basket, Product product) throws SQLException;
 
     public void buyProductsFromBasket(UserBasket basket) throws SQLException;
-
-    public void setProductStatusInCatalog(int productID, boolean productStatus) throws SQLException;
 
     public List getSalesWithSum() throws SQLException;
 }
