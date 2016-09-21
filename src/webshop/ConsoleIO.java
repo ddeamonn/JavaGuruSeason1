@@ -22,45 +22,40 @@ public class ConsoleIO {
                 ConsoleIO.showMessage("Check your input. Please try again");
             }
         }
+    }
 
+    public static boolean getYesNo() {
+        ConsoleIO.showMessage("Please enter 'y' or 'yes', 'n' or 'no'");
+        while (true) {
+            try {
+                Scanner sc = new Scanner(System.in);
+                String string = sc.nextLine();
+                if ((string.equals("y")) || (string.startsWith("yes"))) {
+                    return true;
+                }
+                if ((string.equals("n")) || (string.startsWith("no"))) {
+                    return false;
+                }
+                ConsoleIO.showMessage("Please enter 'y' or 'yes', 'n' or 'no'");
+            } catch (InputMismatchException e) {
+                ConsoleIO.showMessage("Check your input. Please enter 'y' or 'yes', 'n' or 'no'");
+            }
+        }
     }
 
     public static String getUserInputString() {
         while (true) {
             try {
                 Scanner sc = new Scanner(System.in);
-                String number = sc.nextLine();
-                return number;
+                String string = sc.nextLine();
+                return string;
             } catch (InputMismatchException e) {
                 ConsoleIO.showMessage("Check your input. Please try again");
             }
         }
     }
 
-    public static void showUserMenu(User user) {
-        HashMap<Integer, String> methods = UserUIMethods.allowedMethods(user);
-        int i = 1;
 
-        ConsoleIO.showMessage("======== User Menu ========");
 
-        for (Map.Entry<Integer, String> method : methods.entrySet()) {
-            ConsoleIO.showMessage(i + " - " + method.getValue());
-            i++;
-        }
 
-        ConsoleIO.showMessage(i + " - Exit");
-
-    }
-
-    public static String[] showLoginForm(){
-
-        String[] loginForm = new String[2];
-        ConsoleIO.showMessage("======== LOGIN FORM ========");
-        ConsoleIO.showMessage("Please enter your login: ");
-        loginForm[0] = ConsoleIO.getUserInputString();
-        ConsoleIO.showMessage("Please enter your password: ");
-        loginForm[1] = ConsoleIO.getUserInputString();
-
-        return loginForm;
-    }
 }

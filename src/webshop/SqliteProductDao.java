@@ -1,8 +1,7 @@
 package webshop;
 
 import java.sql.*;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Amir i Masha on 2016.09.20..
@@ -140,5 +139,31 @@ public class SqliteProductDao implements ProductDao {
         sqlStatement.setInt(1, productID);
         sqlStatement.setBoolean(2, productStatus);
         sqlStatement.executeUpdate();
+    }
+
+    @Override
+    public Map<Integer, Product> getProductMap() throws SQLException {
+
+        PreparedStatement sqlStatement = null;
+        String sql = "SELECT * FROM PRODUCTS";
+
+        Map<Integer, Product> productMap = new HashMap<>();
+
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        ResultSet result = sqlStatement.executeQuery();
+
+        while (result.next()) {
+
+            int queryProductID = result.getInt("Id");
+            String queryProductName = result.getString("Name");
+            String queryProductCategory = result.getString("Category");
+            int queryProductPrice = result.getInt("Price");
+
+            Product product = new Product(queryProductID, queryProductName, queryProductCategory, queryProductPrice);
+
+            productMap.put(queryProductID, product);
+
+        }
+        return productMap;
     }
 }

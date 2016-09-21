@@ -1,7 +1,7 @@
 package webshop;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Amir i Masha on 2016.09.20..
@@ -18,4 +18,6 @@ public interface ProductDao {
     public boolean checkProductExists(String productName, String productCategory) throws SQLException;
 
     public void setProductStatusInCatalog(int productID, boolean productStatus) throws SQLException;
+
+    public Map getProductMap() throws SQLException;
 }

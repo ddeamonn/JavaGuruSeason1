@@ -1,7 +1,6 @@
 package webshop;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Calendar;
@@ -31,7 +30,7 @@ public class SqliteSalesDao implements SalesDao {
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 
         User buyer = basket.getBasketUser();
-        HashMap<Product, Integer> products = basket.getProducts();
+        HashMap<Product, Integer> products = basket.getProductsInBasket();
 
         int saleID = 1;
 

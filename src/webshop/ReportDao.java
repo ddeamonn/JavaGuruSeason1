@@ -1,7 +1,7 @@
 package webshop;
 
 import java.sql.SQLException;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Amir i Masha on 2016.09.20..

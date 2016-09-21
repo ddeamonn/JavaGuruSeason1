@@ -33,10 +33,6 @@ public class UserBasket {
         return productsInBasket;
     }
 
-    public HashMap<Product, Integer> getProducts(){
-        return this.productsInBasket;
-    }
-
     public User getBasketUser() {
         return this.basketUser;
     }

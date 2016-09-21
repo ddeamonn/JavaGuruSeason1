@@ -34,7 +34,9 @@ public class Product {
 
     @Override
     public String toString() {
-        return (this.productName + " " + this.productCategory + " " + this.productPrice);
+        return ("Product name: " + this.productName +
+                ". Product category: " + this.productCategory +
+                ". Product price: " + this.productPrice);
     }
 
     @Override
