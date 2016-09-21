@@ -1,5 +1,6 @@
 package webshop;
 
+import java.sql.SQLException;
 import java.util.*;
 
 /**
@@ -68,7 +69,7 @@ public class ConsoleUI {
         );
     }
 
-    public static int showAllUsers(Map<Integer, User> users) {
+    public static void showAllUsers(Map<Integer, User> users) {
 
         ConsoleIO.showMessage("======== Users in Webshop ========");
         for (Map.Entry<Integer, User> user : users.entrySet()) {
@@ -78,10 +79,6 @@ public class ConsoleUI {
                     ". User role: " + user.getValue().getUserRole()
             );
         }
-
-        ConsoleIO.showMessage("Please enter product number: ");
-
-        return ConsoleIO.getUserInputInt();
     }
 
     public static boolean buySaleForm(UserBasket basket) {
@@ -90,5 +87,18 @@ public class ConsoleUI {
         ConsoleIO.showMessage("Do you want to buy this products?");
         return ConsoleIO.getYesNo();
     }
+
+    public static User loginUser(UserDao userDao) throws SQLException {
+        User usr = null;
+
+        while (usr == null) {
+            String[] creds = ConsoleUI.showLoginForm();
+            User usrTemp = userDao.getUser(creds[0], creds[1]);
+            if (usrTemp == null) ConsoleIO.showMessage("Login failed. Please try again");
+            else usr = usrTemp;
+        }
+        return usr;
+    }
+
 
 }

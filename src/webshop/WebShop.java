@@ -12,56 +12,63 @@ public class WebShop {
 
             // Dao db = new DaoSqlite(dbConnection);
 
-            UserDao userDb = new SqliteUserDao(dbConnection);
-            ProductDao productDb = new SqliteProductDao(dbConnection);
-            SalesDao saleDb = new SqliteSalesDao(dbConnection);
+            UserDao userDao = new SqliteUserDao(dbConnection);
+            ProductDao productDao = new SqliteProductDao(dbConnection);
+            SalesDao salesDao = new SqliteSalesDao(dbConnection);
 
 
             System.out.println("Opened database successfully");
 
             try {
 /*
-                userDb.addUser("Anonymous", "321123", userRoleType.USER);
-                userDb.addUser("Amir", "111", userRoleType.ADMIN);
-                userDb.addUser("Andrej", "222", userRoleType.USER);
-                userDb.addUser("Aleksej", "333", userRoleType.USER);
+                userDao.addUser("Anonymous", "321123", UserRoleType.USER);
+                userDao.addUser("Amir", "111", UserRoleType.ADMIN);
+                userDao.addUser("Andrej", "222", UserRoleType.USER);
+                userDao.addUser("Aleksej", "333", UserRoleType.USER);
 
-                productDb.addProduct("Blender", "Kitchen Electronics", 35.35f);
-                productDb.addProduct("Mixer", "Kitchen Electronics", 45.12f);
-                productDb.addProduct("Samsung TV", "Electronics", 499.99f);
-                productDb.addProduct("LG TV", "Electronics", 399.99f);
-*/
-                User usr = userDb.getUser("Anonymous", "321123");
+                productDao.addProduct("Blender", "Kitchen Electronics", 35.35f);
+                productDao.addProduct("Mixer", "Kitchen Electronics", 45.12f);
+                productDao.addProduct("Samsung TV", "Electronics", 499.99f);
+                productDao.addProduct("LG TV", "Electronics", 399.99f);
+
+                User usr = userDao.getUser("Anonymous", "321123");
                 User usrTenp = null;
 
                 if (true) {
                     while (usr.getUserName().equals(Constants.USER_ANONYMOUS)) {
-                        String[] creds = ConsoleIO.showLoginForm();
-                        usrTenp = userDb.getUser(creds[0], creds[1]);
+                        String[] creds = ConsoleUI.showLoginForm();
+                        usrTenp = userDao.getUser(creds[0], creds[1]);
                         if (usrTenp == null) ConsoleIO.showMessage("Login failed. Please try again");
                         else usr = usrTenp;
                     }
                 }
+*/
+                User usr = ConsoleUI.loginUser(userDao);
 
                 ConsoleIO.showMessage("Welcome " + usr.getUserName());
-/*
+
                 UserBasket basket = new UserBasket(usr);
 
-                basket.addProduct(productDb.getProductByName("Mixer"));
-                basket.addProduct(productDb.getProductByName("Blender"));
-                basket.addProduct(productDb.getProductByName("Samsung TV"));
-                basket.addProduct(productDb.getProductByName("Mixer"));
-                basket.addProduct(productDb.getProductByName("Mixer"));
-                basket.addProduct(productDb.getProductByName("Mixer"));
-                basket.addProduct(productDb.getProductByName("Samsung TV"));
-                basket.addProduct(productDb.getProductByName("Blender"));
-                basket.addProduct(productDb.getProductByName("Blender"));
+                basket.addProduct(productDao.getProductByName("Mixer"));
+                basket.addProduct(productDao.getProductByName("Blender"));
+                basket.addProduct(productDao.getProductByName("Samsung TV"));
+                basket.addProduct(productDao.getProductByName("Mixer"));
+                basket.addProduct(productDao.getProductByName("Mixer"));
+                basket.addProduct(productDao.getProductByName("Mixer"));
+                basket.addProduct(productDao.getProductByName("Samsung TV"));
+                basket.addProduct(productDao.getProductByName("Blender"));
+                basket.addProduct(productDao.getProductByName("Blender"));
 
-                //basket.removeProduct(productDb.getProductByName("Mixer"));
+                //basket.removeProduct(productDao.getProductByName("Mixer"));
 
-                saleDb.buyProductsFromBasket(basket);
-*/
-                ConsoleIO.showUserMenu(usr);
+                //salesDao.buyProductsFromBasket(basket);
+
+                //ConsoleUI.showUserMenu(usr);
+                //ConsoleUI.showAllUsers(userDao.getAllUsers());
+                //ConsoleUI.buySaleForm(basket);
+
+                //ConsoleUI.showProductsInBasket(basket);
+                //ConsoleUI.selectProductFromCatalog(productDao.getProductMap());
 
             } catch (WebShopSqlException e) {
                 System.err.println(e.getClass().getName() + ": " + e.getMessage());
@@ -72,4 +79,3 @@ public class WebShop {
         }
     }
 }
-
