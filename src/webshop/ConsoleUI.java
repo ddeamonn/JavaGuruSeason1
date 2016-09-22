@@ -8,22 +8,42 @@ import java.util.*;
  */
 public class ConsoleUI {
 
-    public static void showUserMenu(User user) {
-        Map<Integer, String> methods = UserUIMethods.allowedMethods(user);
-        int i = 1;
+    private UserUIMethods uiMethods;
 
-        ConsoleIO.showMessage("======== User Menu ========");
+    public ConsoleUI() throws SQLException, ClassNotFoundException {
+        this.uiMethods = new UserUIMethods(WebShopDbFactory.getDbConnection(WebShopDbTypes.SQLITE));
+    }
 
-        for (Map.Entry<Integer, String> method : methods.entrySet()) {
-            ConsoleIO.showMessage(i + " - " + method.getValue());
-            i++;
+    public void showMainMenu() throws SQLException {
+
+        User user = this.uiMethods.getDefaultUser();
+        boolean toContinue = true;
+
+        while (toContinue) {
+
+            Map<Integer, String> methods = UserUIMethods.allowedMethods(user);
+            int i = 1;
+            ConsoleIO.showMessage("======== User Menu ========");
+
+            for (Map.Entry<Integer, String> method : methods.entrySet()) {
+                ConsoleIO.showMessage(i + " - " + method.getValue());
+                i++;
+            }
+
+            ConsoleIO.showMessage(i + " - Exit");
+            ConsoleIO.showMessage("Please select: ");
+
+            int usersSelected = ConsoleIO.getUserInputInt();
+            switch (usersSelected) {
+                case Constants.EXIT:
+                    toContinue = false;
+                    break;
+            }
         }
-
-        ConsoleIO.showMessage(i + " - Exit");
 
     }
 
-    public static String[] showLoginForm() {
+    public String[] showLoginForm() {
 
         String[] loginForm = new String[2];
         ConsoleIO.showMessage("======== LOGIN FORM ========");
@@ -35,7 +55,7 @@ public class ConsoleUI {
         return loginForm;
     }
 
-    public static int selectProductFromCatalog(Map<Integer, Product> products) {
+    public int selectProductFromCatalog(Map<Integer, Product> products) {
 
         ConsoleIO.showMessage("=== Select product from catalog ===");
         for (Map.Entry<Integer, Product> product : products.entrySet()) {
@@ -49,7 +69,7 @@ public class ConsoleUI {
         return ConsoleIO.getUserInputInt();
     }
 
-    public static void showProductsInBasket(UserBasket basket) {
+    public void showProductsInBasket(UserBasket basket) {
 
         ConsoleIO.showMessage("==== Products in user basket ====");
         HashMap<Product, Integer> products = basket.getProductsInBasket();
@@ -69,7 +89,7 @@ public class ConsoleUI {
         );
     }
 
-    public static void showAllUsers(Map<Integer, User> users) {
+    public void showAllUsers(Map<Integer, User> users) {
 
         ConsoleIO.showMessage("======== Users in Webshop ========");
         for (Map.Entry<Integer, User> user : users.entrySet()) {
@@ -81,19 +101,19 @@ public class ConsoleUI {
         }
     }
 
-    public static boolean buySaleForm(UserBasket basket) {
+    public boolean buySaleForm(UserBasket basket) {
         ConsoleIO.showMessage("======== Buy Products ========");
-        ConsoleUI.showProductsInBasket(basket);
+        this.showProductsInBasket(basket);
         ConsoleIO.showMessage("Do you want to buy this products?");
         return ConsoleIO.getYesNo();
     }
 
-    public static User loginUser(UserDao userDao) throws SQLException {
+    public User loginUser() throws SQLException {
         User usr = null;
 
         while (usr == null) {
-            String[] creds = ConsoleUI.showLoginForm();
-            User usrTemp = userDao.getUser(creds[0], creds[1]);
+            String[] creds = this.showLoginForm();
+            User usrTemp = this.uiMethods.userLogin(creds[0], creds[1]);
             if (usrTemp == null) ConsoleIO.showMessage("Login failed. Please try again");
             else usr = usrTemp;
         }

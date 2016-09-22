@@ -12,22 +12,24 @@ public class Constants {
 
     public static final String USER_ANONYMOUS = "Anonymous";
 
-    public static final int LOGIN_USER = 100;
-    public static final int LOGOUT_USER = 101;
+    public static final int LOGIN_USER = 1;
+    public static final int LOGOUT_USER = 2;
 
-    public static final int PRODUCTS_SHOW_IN_CATALOG = 110;
-    public static final int BASKET_ADD_PRODUCT = 111;
-    public static final int BASKET_REMOVE_PRODUCT = 112;
-    public static final int BASKET_BUY_PRODUCTS = 101;
+    public static final int PRODUCTS_SHOW_IN_CATALOG = 3;
+    public static final int BASKET_ADD_PRODUCT = 4;
+    public static final int BASKET_REMOVE_PRODUCT = 5;
+    public static final int BASKET_BUY_PRODUCTS = 6;
 
-    public static final int CATALOG_ADD_PRODUCT = 201;
-    public static final int CATALOG_DISABLE_PRODUCT = 202;
-    public static final int CATALOG_ENABLE_PRODUCT = 203;
-    public static final int CATALOG_CHANGE_PRODUCT_PRICE = 204;
+    public static final int CATALOG_ADD_PRODUCT = 7;
+    public static final int CATALOG_DISABLE_PRODUCT = 8;
+    public static final int CATALOG_ENABLE_PRODUCT = 9;
+    public static final int CATALOG_CHANGE_PRODUCT_PRICE = 10;
 
-    public static final int USER_LIST_USERS = 301;
-    public static final int USER_ADD_USER = 302;
-    public static final int USER_ENABLE_USER = 303;
-    public static final int USER_DISABLE_USER = 304;
+    public static final int USER_LIST_USERS = 11;
+    public static final int USER_ADD_USER = 12;
+    public static final int USER_ENABLE_USER = 13;
+    public static final int USER_DISABLE_USER = 14;
+
+    public static final int EXIT = 20;
 
 }

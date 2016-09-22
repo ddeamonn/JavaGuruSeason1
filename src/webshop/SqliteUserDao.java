@@ -18,7 +18,7 @@ public class SqliteUserDao implements UserDao {
     }
 
     @Override
-    public void addUser(String userName, String userPassword, UserRoleType userType) throws SQLException {
+    public void addUser(String userName, String userPassword, UserRoleTypes userType) throws SQLException {
 
         //if (checkUserExists(userName)) throw new WebShopSqlException("User with name " + userName + " already exists");
 
@@ -65,7 +65,7 @@ public class SqliteUserDao implements UserDao {
             String queryUserPassword = result.getString("Password");
             String queryUserRoleName = result.getString("Role");
 
-            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleType.valueOf(queryUserRoleName));
+            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleTypes.valueOf(queryUserRoleName));
 
             userMap.put(queryUserId, usr);
         }
@@ -91,7 +91,7 @@ public class SqliteUserDao implements UserDao {
             String queryUserPassword = result.getString("Password");
             String queryUserRoleName = result.getString("Role");
 
-            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleType.valueOf(queryUserRoleName));
+            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleTypes.valueOf(queryUserRoleName));
 
             return usr;
         }
@@ -101,7 +101,7 @@ public class SqliteUserDao implements UserDao {
 
     @Override
     public void updateUser(User user, String newUserName, String newUserPassword,
-                           UserRoleType newUserRole, boolean userEnabled) throws SQLException {
+                           UserRoleTypes newUserRole, boolean userEnabled) throws SQLException {
 
         PreparedStatement sqlStatement = null;
         String sql = "UPDATE USERS SET Name = ?, Password = ?, Role = ?, Enabled = ? WHERE (UserName=?) AND (UserRole=?)";

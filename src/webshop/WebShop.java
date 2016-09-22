@@ -21,10 +21,10 @@ public class WebShop {
 
             try {
 /*
-                userDao.addUser("Anonymous", "321123", UserRoleType.USER);
-                userDao.addUser("Amir", "111", UserRoleType.ADMIN);
-                userDao.addUser("Andrej", "222", UserRoleType.USER);
-                userDao.addUser("Aleksej", "333", UserRoleType.USER);
+                userDao.addUser("Anonymous", "321123", UserRoleTypes.USER);
+                userDao.addUser("Amir", "111", UserRoleTypes.ADMIN);
+                userDao.addUser("Andrej", "222", UserRoleTypes.USER);
+                userDao.addUser("Aleksej", "333", UserRoleTypes.USER);
 
                 productDao.addProduct("Blender", "Kitchen Electronics", 35.35f);
                 productDao.addProduct("Mixer", "Kitchen Electronics", 45.12f);
@@ -43,7 +43,9 @@ public class WebShop {
                     }
                 }
 */
-                User usr = ConsoleUI.loginUser(userDao);
+                ConsoleUI consoleUI = new ConsoleUI();
+                /*
+                User usr = consoleUI.loginUser();
 
                 ConsoleIO.showMessage("Welcome " + usr.getUserName());
 
@@ -62,16 +64,18 @@ public class WebShop {
                 //basket.removeProduct(productDao.getProductByName("Mixer"));
 
                 //salesDao.buyProductsFromBasket(basket);
+*/
+                consoleUI.showMainMenu();
+                //consoleUI.showAllUsers(userDao.getAllUsers());
+                //consoleUI.buySaleForm(basket);
 
-                //ConsoleUI.showUserMenu(usr);
-                //ConsoleUI.showAllUsers(userDao.getAllUsers());
-                //ConsoleUI.buySaleForm(basket);
-
-                //ConsoleUI.showProductsInBasket(basket);
-                //ConsoleUI.selectProductFromCatalog(productDao.getProductMap());
+                //consoleUI.showProductsInBasket(basket);
+                //consoleUI.selectProductFromCatalog(productDao.getProductMap());
 
             } catch (WebShopSqlException e) {
-                System.err.println(e.getClass().getName() + ": " + e.getMessage());
+                System.err.println(e.getClass().getName() + "Webshop exception: " + e.getMessage());
+            } catch (SecurityException e) {
+                System.err.println(e.getClass().getName() + "Security violation: " + e.getMessage());
             }
         } catch (Exception e) {
             System.err.println(e.getClass().getName() + ": " + e.getMessage());

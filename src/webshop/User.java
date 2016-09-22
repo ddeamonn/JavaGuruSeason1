@@ -7,10 +7,10 @@ public class User {
     private int userID;
     private String userName;
     private String userPassword;
-    private UserRoleType userRole;
+    private UserRoleTypes userRole;
 
 
-    User(int userID, String userName, String userPassword, UserRoleType userRole) {
+    User(int userID, String userName, String userPassword, UserRoleTypes userRole) {
         this.userID = userID;
         this.userName = userName;
         this.userRole = userRole;
@@ -29,7 +29,7 @@ public class User {
         return this.userPassword;
     }
 
-    public UserRoleType getUserRole() {
+    public UserRoleTypes getUserRole() {
         return this.userRole;
     }
 

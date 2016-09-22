@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Created by Amir i Masha on 2016.09.20..
+ * Created by Amir on 2016.09.20..
  */
 public class SqliteSalesDao implements SalesDao {
 
