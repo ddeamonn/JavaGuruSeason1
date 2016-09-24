@@ -45,4 +45,7 @@ public class SalesCommands {
         salesDao.buyProductsFromBasket(basket);
     }
 
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
 }

@@ -63,4 +63,8 @@ public class ProductsCommands {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
         return productDao.getProductMap();
     }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
 }

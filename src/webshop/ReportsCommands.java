@@ -40,5 +40,9 @@ public class ReportsCommands {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
         List allSales = reportDao.getSalesWithSum();
     }
+
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
 }
 

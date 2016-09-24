@@ -5,7 +5,7 @@ package webshop;
  */
 public class PermissionSecurity {
     public static void checkRequiredUserPermission(User user, UserRoleTypes userRoleRequired) throws SecurityException {
-        if (user.getUserRole() != userRoleRequired){
+        if ((user.getUserRole() != userRoleRequired) && (userRoleRequired != UserRoleTypes.USER)) {
             throw new SecurityException("No required permissions for user: " + user.getUserName());
         }
     }

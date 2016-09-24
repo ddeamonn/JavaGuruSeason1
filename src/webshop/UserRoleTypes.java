@@ -6,5 +6,5 @@ package webshop;
 
 enum UserRoleTypes {
     ADMIN,
-    USER;
+    USER
 }

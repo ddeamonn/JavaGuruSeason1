@@ -9,18 +9,18 @@ import java.util.*;
 public class FormUser {
 
     private UserCommands userCommands;
-    private User user;
+    private User currentUser;
 
-    public FormUser(User user, UserCommands userCommands) {
+    public FormUser(User currentUser, UserCommands userCommands) {
         this.userCommands = userCommands;
-        this.user = user;
+        this.currentUser = currentUser;
     }
 
     public void showFormUser() throws SQLException {
         boolean toContinue = true;
         while (toContinue) {
 
-            Map<Integer, String> methods = UserCommands.allowedMethods(this.user);
+            Map<Integer, String> methods = UserCommands.allowedMethods(this.currentUser);
 
             ConsoleIO.showMessage("======== User Menu ========");
 
@@ -28,7 +28,7 @@ public class FormUser {
                 ConsoleIO.showMessage(method.getKey() + " - " + method.getValue());
             }
 
-            ConsoleIO.showMessage(Constants.EXIT + " - Exit");
+            ConsoleIO.showMessage(Constants.EXIT + " - Return to main menu ");
             ConsoleIO.showMessage("Please select: ");
 
             int usersSelected = ConsoleIO.getUserInputInt();
@@ -37,18 +37,19 @@ public class FormUser {
                     toContinue = false;
                     break;
                 case Constants.LOGIN_USER:
-                    this.user = this.showLoginForm();
+                    this.currentUser = this.showLoginForm();
+                    this.userCommands.setCurrentUser(this.currentUser);
                     break;
                 case Constants.LOGOUT_USER:
                     User tmpUser = userCommands.getDefaultUser();
                     if (tmpUser != null) {
-                        this.user = tmpUser;
+                        this.currentUser = tmpUser;
                     } else {
-                        this.user = userCommands.getDefaultUser();
+                        this.currentUser = userCommands.getDefaultUser();
                     }
                     break;
                 case Constants.USER_ADD_USER:
-                    toContinue = false;
+                    this.showAddUserForm();
                     break;
                 case Constants.USER_DISABLE_USER:
                     toContinue = false;
@@ -63,14 +64,14 @@ public class FormUser {
     private void showAllUsers() throws SQLException {
         try {
 
-            List<User> users = this.userCommands.getAllUsers();
+            Map<Integer, User> users = this.userCommands.getAllUsers();
 
             ConsoleIO.showMessage("======== Users in Webshop ========");
-            for (User user : users) {
-                ConsoleIO.showMessage("User ID: " + user.getUserID() +
-                        ". Username: " + user.getUserName() +
-                        ". Password: " + user.getUserPassword() +
-                        ". User role: " + user.getUserRole()
+            for (Map.Entry<Integer, User> user : users.entrySet()) {
+                ConsoleIO.showMessage("User ID: " + user.getValue().getUserID() +
+                        ". Username: " + user.getValue().getUserName() +
+                        ". Password: " + user.getValue().getUserPassword() +
+                        ". User role: " + user.getValue().getUserRole()
                 );
             }
         } catch (SQLException e) {
@@ -81,11 +82,14 @@ public class FormUser {
     private User showLoginForm() {
         User usr = null;
         try {
-            while (usr == null) {
-                String[] creds = this.loginForm();
-                User usrTemp = this.userCommands.userLogin(creds[0], creds[1]);
-                if (usrTemp == null) ConsoleIO.showMessage("Login failed. Please try again");
-                else usr = usrTemp;
+            String[] creds = this.loginForm();
+            User usrTemp = this.userCommands.userLogin(creds[0], creds[1]);
+            if (usrTemp == null) {
+                ConsoleIO.showMessage("Login failed. Please try again");
+                usr = this.currentUser;
+            } else {
+                usr = usrTemp;
+                ConsoleIO.showMessage("Login succeded. Welcome " + usr.getUserName());
             }
             return usr;
         } catch (SQLException e) {
@@ -111,16 +115,21 @@ public class FormUser {
         try {
             Map<String, String> userInfo = this.addUserForm();
 
-            User usr = this.userCommands.getUser(userInfo.get(Constants.USER_LOGIN),
-                    userInfo.get(Constants.USER_PASSWORD));
+            boolean userExists = this.userCommands.checkUserExists(userInfo.get(Constants.USER_LOGIN));
 
-            if (usr != null) {
+            if (!userExists) {
+                String userRoleString = userInfo.get(Constants.USER_ROLE).toUpperCase();
                 this.userCommands.addNewUser(userInfo.get(Constants.USER_LOGIN),
                         userInfo.get(Constants.USER_PASSWORD),
-                        userInfo.get(Constants.USER_ROLE));
+                        UserRoleTypes.valueOf(userRoleString));
+                ConsoleIO.showMessage("User successfully added");
+            } else {
+                ConsoleIO.showMessage("Can't add new user. User already exists.");
             }
+        } catch (IllegalArgumentException e) {
+            ConsoleIO.showMessage("Failed to add currentUser new user. Role type is incorrect.");
         } catch (SQLException e) {
-            ConsoleIO.showMessage("Failed to add user new user. Reason: " + e.getMessage());
+            ConsoleIO.showMessage("Failed to add currentUser new user. Reason: " + e.getMessage());
         }
     }
 
@@ -137,5 +146,9 @@ public class FormUser {
         loginInfo.put(Constants.USER_ROLE, ConsoleIO.getUserInputString());
 
         return loginInfo;
+    }
+
+    public User getCurrentUser() {
+        return this.currentUser;
     }
 }

@@ -60,9 +60,10 @@ public class UserCommands {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
     }
 
-    public void addNewUser(String userName, String userPassword, String userRole)
+    public void addNewUser(String userName, String userPassword, UserRoleTypes userRole)
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
+        userDao.addUser(userName, userPassword, userRole);
     }
 
     public User getUser(String userName, String userPassword)
@@ -71,16 +72,24 @@ public class UserCommands {
         return userDao.getUser(userName, userPassword);
     }
 
-    public List<User> getAllUsers()
+    public boolean checkUserExists(String userName)
+            throws SQLException, SecurityException {
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
+        return userDao.checkUserExists(userName);
+    }
+
+    public Map<Integer, User> getAllUsers()
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
-
-        return null;
+        return userDao.getAllUsers();
     }
 
     public User getDefaultUser()
             throws SQLException, SecurityException {
         return userDao.getUser("Anonymous", "321123");
     }
-}
 
+    public void setCurrentUser(User user) {
+        this.currentUser = user;
+    }
+}
