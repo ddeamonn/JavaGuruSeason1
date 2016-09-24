@@ -9,7 +9,6 @@ import java.util.*;
 public class SqliteInitDatabase implements InitDatabase {
 
     private Connection dbConnection;
-    private d
 
     public SqliteInitDatabase() throws ClassNotFoundException {
         Class.forName("org.sqlite.JDBC");
