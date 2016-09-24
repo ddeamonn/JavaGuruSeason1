@@ -1,8 +1,7 @@
 package webshop;
 
 import java.sql.*;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by Amir i Masha on 2016.09.20..
@@ -19,8 +18,6 @@ public class SqliteUserDao implements UserDao {
 
     @Override
     public void addUser(String userName, String userPassword, UserRoleTypes userType) throws SQLException {
-
-        //if (checkUserExists(userName)) throw new WebShopSqlException("User with name " + userName + " already exists");
 
         PreparedStatement sqlStatement = null;
         String sql = "INSERT INTO USERS(Name, Password, Role) VALUES (?, ?, ?)";

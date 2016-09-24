@@ -10,8 +10,6 @@ public class WebShop {
         try {
             Connection dbConnection = DriverManager.getConnection("jdbc:sqlite:src/webshop/dbo/webshop.db");
 
-            // Dao db = new DaoSqlite(dbConnection);
-
             UserDao userDao = new SqliteUserDao(dbConnection);
             ProductDao productDao = new SqliteProductDao(dbConnection);
             SalesDao salesDao = new SqliteSalesDao(dbConnection);

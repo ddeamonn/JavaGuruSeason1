@@ -6,12 +6,13 @@ import java.util.*;
 /**
  * Created by Amir i Masha on 2016.09.21..
  */
+
 public class ConsoleUI {
 
-    private UserUIMethods uiMethods;
+    private DataManipulationMethods uiMethods;
 
     public ConsoleUI() throws SQLException, ClassNotFoundException {
-        this.uiMethods = new UserUIMethods(WebShopDbFactory.getDbConnection(WebShopDbTypes.SQLITE));
+        this.uiMethods = new DataManipulationMethods(DatabseTypes.SQLITE);
     }
 
     public void showMainMenu() throws SQLException {
@@ -21,16 +22,14 @@ public class ConsoleUI {
 
         while (toContinue) {
 
-            Map<Integer, String> methods = UserUIMethods.allowedMethods(user);
-            int i = 1;
+            Map<Integer, String> methods = DataManipulationMethods.allowedMethods(user);
             ConsoleIO.showMessage("======== User Menu ========");
 
             for (Map.Entry<Integer, String> method : methods.entrySet()) {
-                ConsoleIO.showMessage(i + " - " + method.getValue());
-                i++;
+                ConsoleIO.showMessage(method.getKey() + " - " + method.getValue());
             }
 
-            ConsoleIO.showMessage(i + " - Exit");
+            ConsoleIO.showMessage(Constants.EXIT + " - Exit");
             ConsoleIO.showMessage("Please select: ");
 
             int usersSelected = ConsoleIO.getUserInputInt();

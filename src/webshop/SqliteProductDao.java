@@ -52,8 +52,6 @@ public class SqliteProductDao implements ProductDao {
     @Override
     public void addProduct(String productName, String productCategory, float productPrice) throws SQLException {
 
-        //if (checkProductExists(productName, productCategory)) throw new WebShopSqlException("Product already exists");
-
         PreparedStatement sqlStatement = null;
         String sql = "INSERT INTO Products(Name, Category, Price) VALUES (?, ?, ?)";
 

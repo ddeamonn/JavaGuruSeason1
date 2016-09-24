@@ -1,7 +1,6 @@
 package webshop;
 
-import java.sql.Connection;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -10,7 +9,7 @@ import java.util.Map;
  * Created by Amir on 06.09.2016..
  */
 
-public class UserUIMethods implements ClientMethodsInterface, AdminMethodsInterface {
+public class DataManipulationMethods implements ClientMethodsInterface, AdminMethodsInterface {
 
     private UserDao userDao;
     private ProductDao productDao;
@@ -19,12 +18,12 @@ public class UserUIMethods implements ClientMethodsInterface, AdminMethodsInterf
 
     private User currentUser;
 
-    public UserUIMethods(Connection dbConnection) throws SQLException, ClassNotFoundException {
-        this.userDao = new SqliteUserDao(dbConnection);
-        this.productDao = new SqliteProductDao(dbConnection);
-        this.salesDao = new SqliteSalesDao(dbConnection);
-        this.reportDao = new SqliteReportDao(dbConnection);
-
+    public DataManipulationMethods(DatabseTypes dbType) throws SQLException, ClassNotFoundException {
+        DatabaseFactory dao = new DatabaseFactory(dbType);
+        this.userDao = dao.getUserDao();
+        this.productDao = dao.getProductDao();
+        this.salesDao = dao.getSalesDao();
+        this.reportDao = dao.getReportDao();
     }
 
     public static Map<Integer, String> allowedMethods(User user) {
