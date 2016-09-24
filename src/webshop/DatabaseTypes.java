@@ -4,6 +4,6 @@ package webshop;
  * Created by Amir i Masha on 2016.09.22..
  */
 
-public enum DatabseTypes {
+public enum DatabaseTypes {
     SQLITE;
 }

@@ -1,12 +1,22 @@
 package webshop;
 
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
 /**
  * Created by Amir on 24.09.2016..
  */
-public class SalesManipulationMethods {
+public class SalesCommands {
+
+    private SalesDao salesDao;
+    private User currentUser;
+
+    public SalesCommands(DatabaseTypes dbType) throws SQLException, ClassNotFoundException {
+        DatabaseFactory dao = new DatabaseFactory(dbType);
+        this.salesDao = dao.getSalesDao();
+    }
+
     public static Map<Integer, String> allowedMethods(User user) {
 
         Map<Integer, String> allowedMethods = new HashMap<>();
@@ -22,4 +32,17 @@ public class SalesManipulationMethods {
 
         return allowedMethods;
     }
+
+    public void addProductToBasket(Product product, UserBasket basket) {
+        basket.addProduct(product);
+    }
+
+    public void removeProductFromBasket(Product product, UserBasket basket) {
+        basket.removeProduct(product);
+    }
+
+    public void buyProductsInBasket(UserBasket basket) throws SQLException {
+        salesDao.buyProductsFromBasket(basket);
+    }
+
 }

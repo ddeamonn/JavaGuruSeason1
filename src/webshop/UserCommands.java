@@ -6,12 +6,12 @@ import java.util.*;
 /**
  * Created by Amir on 24.09.2016..
  */
-public class UserManupulationMethods {
+public class UserCommands {
 
     private UserDao userDao;
     private User currentUser;
 
-    public UserManupulationMethods(DatabseTypes dbType) throws SQLException, ClassNotFoundException {
+    public UserCommands(DatabaseTypes dbType) throws SQLException, ClassNotFoundException {
         DatabaseFactory dao = new DatabaseFactory(dbType);
         this.userDao = dao.getUserDao();
     }
@@ -60,11 +60,27 @@ public class UserManupulationMethods {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
     }
 
+    public void addNewUser(String userName, String userPassword, String userRole)
+            throws SQLException, SecurityException {
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
+    }
+
+    public User getUser(String userName, String userPassword)
+            throws SQLException, SecurityException {
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
+        return userDao.getUser(userName, userPassword);
+    }
+
     public List<User> getAllUsers()
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
 
         return null;
+    }
+
+    public User getDefaultUser()
+            throws SQLException, SecurityException {
+        return userDao.getUser("Anonymous", "321123");
     }
 }
 

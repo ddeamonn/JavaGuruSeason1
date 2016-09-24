@@ -15,7 +15,7 @@ public class DatabaseFactory {
     private ReportDao reportDao;
 
 
-    public DatabaseFactory(DatabseTypes dbType) throws SQLException, ClassNotFoundException {
+    public DatabaseFactory(DatabaseTypes dbType) throws SQLException, ClassNotFoundException {
         switch (dbType) {
             case SQLITE:
                 Connection dbConnection = DriverManager.getConnection(WebShopSettings.DbConnectionString);

@@ -5,6 +5,6 @@ package webshop;
  */
 
 public class WebShopSettings {
-    public static final DatabseTypes DATABASE_TYPE = DatabseTypes.SQLITE;
+    public static final DatabaseTypes DATABASE_TYPE = DatabaseTypes.SQLITE;
     public static final String DbConnectionString = "jdbc:sqlite:src/webshop/dbo/webshop.db";
 }

@@ -32,4 +32,9 @@ public class Constants {
 
     public static final int EXIT = 20;
 
+    public static final String USER_LOGIN = "UserLogin";
+    public static final String USER_PASSWORD = "UserPassword";
+    public static final String USER_ROLE = "UserRole";
+
+
 }
