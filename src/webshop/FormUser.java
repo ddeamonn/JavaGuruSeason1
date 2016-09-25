@@ -52,6 +52,7 @@ public class FormUser {
                     this.showAddUserForm();
                     break;
                 case Constants.USER_DISABLE_USER:
+
                     toContinue = false;
                     break;
                 case Constants.USER_LIST_USERS:
@@ -127,9 +128,9 @@ public class FormUser {
                 ConsoleIO.showMessage("Can't add new user. User already exists.");
             }
         } catch (IllegalArgumentException e) {
-            ConsoleIO.showMessage("Failed to add currentUser new user. Role type is incorrect.");
+            ConsoleIO.showMessage("Failed to add new user. Role type is incorrect.");
         } catch (SQLException e) {
-            ConsoleIO.showMessage("Failed to add currentUser new user. Reason: " + e.getMessage());
+            ConsoleIO.showMessage("Failed to add new user. Reason: " + e.getMessage());
         }
     }
 
@@ -147,6 +148,35 @@ public class FormUser {
 
         return loginInfo;
     }
+
+    private void showDiableUserForm() {
+        try {
+
+            Map<Integer, User> users = this.userCommands.getAllUsers();
+
+            ConsoleIO.showMessage("======== Disable User ========");
+            for (Map.Entry<Integer, User> user : users.entrySet()) {
+                ConsoleIO.showMessage("User ID: " + user.getValue().getUserID() +
+                        ". Username: " + user.getValue().getUserName() +
+                        ". User role: " + user.getValue().getUserRole()
+                );
+            }
+
+            ConsoleIO.showMessage("Please inter user ID: ");
+            int userId = ConsoleIO.getUserInputInt();
+            User userToDisable = this.userCommands.getUser(userId);
+            if (userToDisable != null) {
+                this.userCommands.disableUser(userToDisable);
+            } else {
+                ConsoleIO.showMessage("No user with suck ID");
+            }
+
+
+        } catch (SQLException e) {
+            ConsoleIO.showMessage("Failed to disable user. Reason: " + e.getMessage());
+        }
+    }
+
 
     public User getCurrentUser() {
         return this.currentUser;

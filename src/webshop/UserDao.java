@@ -11,7 +11,13 @@ public interface UserDao {
 
     public User getUser(String userName, String userPassword) throws SQLException;
 
+    public User getUser(String userName) throws SQLException;
+
+    public User getUser(int userId) throws SQLException;
+
     public Map<Integer, User> getAllUsers() throws SQLException;
+
+    public void disableUser(User user) throws SQLException;
 
     public boolean checkUserExists(String userName) throws SQLException;
 

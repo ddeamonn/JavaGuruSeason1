@@ -22,7 +22,7 @@ public class UserCommands {
 
         if ((user.getUserRole() == UserRoleTypes.USER) || (user.getUserRole() == UserRoleTypes.ADMIN)) {
             allowedMethods.put(Constants.LOGIN_USER, "Login user");
-            allowedMethods.put(Constants.LOGOUT_USER, "Login logout");
+            allowedMethods.put(Constants.LOGOUT_USER, "Logout user");
         }
 
         if (user.getUserRole() == UserRoleTypes.ADMIN) {
@@ -70,6 +70,18 @@ public class UserCommands {
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
         return userDao.getUser(userName, userPassword);
+    }
+
+    public User getUser(String userName)
+            throws SQLException, SecurityException {
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
+        return userDao.getUser(userName);
+    }
+
+    public User getUser(int userId)
+            throws SQLException, SecurityException {
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
+        return userDao.getUser(userId);
     }
 
     public boolean checkUserExists(String userName)
