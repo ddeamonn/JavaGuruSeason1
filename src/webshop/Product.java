@@ -8,12 +8,14 @@ public class Product {
     private String productName;
     private String productCategory;
     private float productPrice;
+    private boolean productStatus;
 
-    public Product(int productID, String productName, String productCategory, float productPrice) {
+    public Product(int productID, String productName, String productCategory, float productPrice, boolean productStatus) {
         this.productID = productID;
         this.productName = productName;
         this.productCategory = productCategory;
         this.productPrice = productPrice;
+        this.productStatus = productStatus;
     }
 
     public int getProductID() {
@@ -30,6 +32,10 @@ public class Product {
 
     public float getProductPrice() {
         return this.productPrice;
+    }
+
+    public boolean getProductStatus() {
+        return this.productStatus;
     }
 
     @Override

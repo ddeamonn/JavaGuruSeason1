@@ -16,6 +16,15 @@ public class FormUser {
         this.currentUser = currentUser;
     }
 
+    private void printUserToConsole(User user) {
+        ConsoleIO.showMessage("User ID: " + user.getUserID() +
+                ". Username: " + user.getUserName() +
+                ". Password: " + user.getUserPassword() +
+                ". User role: " + user.getUserRole() +
+                ". User status: " + user.getUserStatus()
+        );
+    }
+
     public void showFormUser() throws SQLException {
         boolean toContinue = true;
         while (toContinue) {
@@ -38,22 +47,26 @@ public class FormUser {
                     break;
                 case Constants.LOGIN_USER:
                     this.currentUser = this.showLoginForm();
-                    this.userCommands.setCurrentUser(this.currentUser);
+                    toContinue = false;
                     break;
                 case Constants.LOGOUT_USER:
                     User tmpUser = userCommands.getDefaultUser();
                     if (tmpUser != null) {
                         this.currentUser = tmpUser;
+                        toContinue = false;
                     } else {
                         this.currentUser = userCommands.getDefaultUser();
+                        toContinue = false;
                     }
                     break;
                 case Constants.USER_ADD_USER:
                     this.showAddUserForm();
                     break;
                 case Constants.USER_DISABLE_USER:
-
-                    toContinue = false;
+                    this.showDisableUserForm();
+                    break;
+                case Constants.USER_ENABLE_USER:
+                    this.showEnableUserForm();
                     break;
                 case Constants.USER_LIST_USERS:
                     this.showAllUsers();
@@ -69,11 +82,7 @@ public class FormUser {
 
             ConsoleIO.showMessage("======== Users in Webshop ========");
             for (Map.Entry<Integer, User> user : users.entrySet()) {
-                ConsoleIO.showMessage("User ID: " + user.getValue().getUserID() +
-                        ". Username: " + user.getValue().getUserName() +
-                        ". Password: " + user.getValue().getUserPassword() +
-                        ". User role: " + user.getValue().getUserRole()
-                );
+                printUserToConsole(user.getValue());
             }
         } catch (SQLException e) {
             ConsoleIO.showMessage("Failed to list users. Reason: " + e.getMessage());
@@ -88,9 +97,12 @@ public class FormUser {
             if (usrTemp == null) {
                 ConsoleIO.showMessage("Login failed. Please try again");
                 usr = this.currentUser;
+            } else if (usrTemp.getUserStatus() == UserStatus.DISABLED) {
+                ConsoleIO.showMessage("User is disabled.");
+                usrTemp = null;
             } else {
                 usr = usrTemp;
-                ConsoleIO.showMessage("Login succeded. Welcome " + usr.getUserName());
+                ConsoleIO.showMessage("Login succeeded. Welcome " + usr.getUserName());
             }
             return usr;
         } catch (SQLException e) {
@@ -122,7 +134,7 @@ public class FormUser {
                 String userRoleString = userInfo.get(Constants.USER_ROLE).toUpperCase();
                 this.userCommands.addNewUser(userInfo.get(Constants.USER_LOGIN),
                         userInfo.get(Constants.USER_PASSWORD),
-                        UserRoleTypes.valueOf(userRoleString));
+                        UserRoleTypes.valueOf(userRoleString), UserStatus.ENABLED);
                 ConsoleIO.showMessage("User successfully added");
             } else {
                 ConsoleIO.showMessage("Can't add new user. User already exists.");
@@ -149,17 +161,14 @@ public class FormUser {
         return loginInfo;
     }
 
-    private void showDiableUserForm() {
+    private void showDisableUserForm() {
         try {
 
             Map<Integer, User> users = this.userCommands.getAllUsers();
 
             ConsoleIO.showMessage("======== Disable User ========");
             for (Map.Entry<Integer, User> user : users.entrySet()) {
-                ConsoleIO.showMessage("User ID: " + user.getValue().getUserID() +
-                        ". Username: " + user.getValue().getUserName() +
-                        ". User role: " + user.getValue().getUserRole()
-                );
+                printUserToConsole(user.getValue());
             }
 
             ConsoleIO.showMessage("Please inter user ID: ");
@@ -167,8 +176,35 @@ public class FormUser {
             User userToDisable = this.userCommands.getUser(userId);
             if (userToDisable != null) {
                 this.userCommands.disableUser(userToDisable);
+                ConsoleIO.showMessage("User " + userToDisable.getUserName() + " is successfully disabled");
             } else {
-                ConsoleIO.showMessage("No user with suck ID");
+                ConsoleIO.showMessage("No user with such ID");
+            }
+
+
+        } catch (SQLException e) {
+            ConsoleIO.showMessage("Failed to disable user. Reason: " + e.getMessage());
+        }
+    }
+
+    private void showEnableUserForm() {
+        try {
+
+            Map<Integer, User> users = this.userCommands.getAllUsers();
+
+            ConsoleIO.showMessage("======== Enable User ========");
+            for (Map.Entry<Integer, User> user : users.entrySet()) {
+                printUserToConsole(user.getValue());
+            }
+
+            ConsoleIO.showMessage("Please inter user ID: ");
+            int userId = ConsoleIO.getUserInputInt();
+            User userToDisable = this.userCommands.getUser(userId);
+            if (userToDisable != null) {
+                this.userCommands.enableUser(userToDisable);
+                ConsoleIO.showMessage("User " + userToDisable.getUserName() + " is successfully enabled");
+            } else {
+                ConsoleIO.showMessage("No user with such ID");
             }
 
 

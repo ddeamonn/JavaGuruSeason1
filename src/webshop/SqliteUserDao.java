@@ -17,15 +17,16 @@ public class SqliteUserDao implements UserDao {
     }
 
     @Override
-    public void addUser(String userName, String userPassword, UserRoleTypes userType) throws SQLException {
+    public void addUser(String userName, String userPassword, UserRoleTypes userType, UserStatus userStatus) throws SQLException {
 
         PreparedStatement sqlStatement = null;
-        String sql = "INSERT INTO USERS(Name, Password, Role) VALUES (?, ?, ?)";
+        String sql = "INSERT INTO USERS(Name, Password, Role, Status) VALUES (?, ?, ?, ?)";
         sqlStatement = this.dbConnection.prepareStatement(sql);
 
         sqlStatement.setString(1, userName);
         sqlStatement.setString(2, userPassword);
         sqlStatement.setString(3, userType.toString());
+        sqlStatement.setString(4, userStatus.toString());
 
         sqlStatement.executeUpdate();
     }
@@ -61,8 +62,9 @@ public class SqliteUserDao implements UserDao {
             String queryUserName = result.getString("Name");
             String queryUserPassword = result.getString("Password");
             String queryUserRoleName = result.getString("Role");
+            String queryUserStatus = result.getString("Status");
 
-            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleTypes.valueOf(queryUserRoleName));
+            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleTypes.valueOf(queryUserRoleName), UserStatus.valueOf(queryUserStatus));
 
             userMap.put(queryUserId, usr);
         }
@@ -87,8 +89,10 @@ public class SqliteUserDao implements UserDao {
             String queryUserName = result.getString("Name");
             String queryUserPassword = result.getString("Password");
             String queryUserRoleName = result.getString("Role");
+            String queryUserStatus = result.getString("Status");
 
-            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleTypes.valueOf(queryUserRoleName));
+            User usr = new User(queryUserId, queryUserName, queryUserPassword,
+                    UserRoleTypes.valueOf(queryUserRoleName), UserStatus.valueOf(queryUserStatus));
 
             return usr;
         }
@@ -112,8 +116,10 @@ public class SqliteUserDao implements UserDao {
             String queryUserName = result.getString("Name");
             String queryUserPassword = result.getString("Password");
             String queryUserRoleName = result.getString("Role");
+            String queryUserStatus = result.getString("Status");
 
-            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleTypes.valueOf(queryUserRoleName));
+            User usr = new User(queryUserId, queryUserName, queryUserPassword,
+                    UserRoleTypes.valueOf(queryUserRoleName), UserStatus.valueOf(queryUserStatus));
 
             return usr;
         }
@@ -137,8 +143,10 @@ public class SqliteUserDao implements UserDao {
             String queryUserName = result.getString("Name");
             String queryUserPassword = result.getString("Password");
             String queryUserRoleName = result.getString("Role");
+            String queryUserStatus = result.getString("Status");
 
-            User usr = new User(queryUserId, queryUserName, queryUserPassword, UserRoleTypes.valueOf(queryUserRoleName));
+            User usr = new User(queryUserId, queryUserName, queryUserPassword,
+                    UserRoleTypes.valueOf(queryUserRoleName), UserStatus.valueOf(queryUserStatus));
 
             return usr;
         }
@@ -148,17 +156,16 @@ public class SqliteUserDao implements UserDao {
 
     @Override
     public void updateUser(User user, String newUserName, String newUserPassword,
-                           UserRoleTypes newUserRole, boolean userEnabled) throws SQLException {
+                           UserRoleTypes newUserRole, UserStatus newUserStatus) throws SQLException {
 
         PreparedStatement sqlStatement = null;
-        String sql = "UPDATE USERS SET Name = ?, Password = ?, Role = ?, Enabled = ? WHERE (UserName=?) AND (UserRole=?)";
+        String sql = "UPDATE USERS SET Name = ?, Password = ?, Role = ?, Status = ? WHERE (Name = ?)";
         sqlStatement = this.dbConnection.prepareStatement(sql);
         sqlStatement.setString(1, newUserName);
         sqlStatement.setString(2, newUserPassword);
         sqlStatement.setString(3, newUserRole.toString());
-        sqlStatement.setBoolean(4, userEnabled);
+        sqlStatement.setString(4, newUserStatus.toString());
         sqlStatement.setString(5, user.getUserName());
-        sqlStatement.setString(6, user.getUserRole().toString());
 
         sqlStatement.executeUpdate();
     }

@@ -22,7 +22,7 @@ public class ProductsCommands {
         Map<Integer, String> allowedMethods = new HashMap<>();
 
         if ((user.getUserRole() == UserRoleTypes.USER) || (user.getUserRole() == UserRoleTypes.ADMIN)) {
-            allowedMethods.put(Constants.PRODUCTS_SHOW_IN_CATALOG, "Show products in catalog");
+            allowedMethods.put(Constants.CATALOG_SHOW_PRODUCTS, "Show products in catalog");
         }
 
         if (user.getUserRole() == UserRoleTypes.ADMIN) {
@@ -47,6 +47,12 @@ public class ProductsCommands {
         productDao.setProductStatusInCatalog(product.getProductID(), Constants.DISABLED);
     }
 
+    public boolean checkProductExists(String productName, String productCategory)
+            throws SQLException, SecurityException {
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
+        return productDao.checkProductExists(productName, productCategory);
+    }
+
     public void enableProductInCatalog(Product product)
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
@@ -57,6 +63,12 @@ public class ProductsCommands {
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
         productDao.setProductPrice(product.getProductID(), newPrice);
+    }
+
+    public Product getProductById(int productId)
+            throws SQLException, SecurityException {
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
+        return productDao.getProductById(productId);
     }
 
     public Map<Integer, Product> getProductMapFromCatalog() throws SQLException, SecurityException {

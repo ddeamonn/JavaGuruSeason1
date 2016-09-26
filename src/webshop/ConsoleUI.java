@@ -20,11 +20,13 @@ public class ConsoleUI {
         this.productsCommands = new ProductsCommands(DatabaseTypes.SQLITE);
         this.reportsCommands = new ReportsCommands(DatabaseTypes.SQLITE);
         this.currentUser = userCommands.getDefaultUser();
+        this.setNewDbConnectionUser();
     }
 
     public void showMainMenu() throws SQLException {
 
         User user = this.userCommands.getDefaultUser();
+        this.currentUser = user;
         boolean toContinue = true;
 
         while (toContinue) {
@@ -38,17 +40,17 @@ public class ConsoleUI {
             ConsoleIO.showMessage(Constants.EXIT + " - Exit");
 
             ConsoleIO.showMessage("Please select: ");
-
             int usersSelected = ConsoleIO.getUserInputInt();
             switch (usersSelected) {
                 case 1:
-                    FormUser userForm = new FormUser(user, userCommands);
+                    FormUser userForm = new FormUser(this.currentUser, userCommands);
                     userForm.showFormUser();
                     this.currentUser = userForm.getCurrentUser();
                     this.setNewDbConnectionUser();
                     break;
                 case 2:
-                    ConsoleIO.showMessage("Not implemented");
+                    FromProducts fromProducts = new FromProducts(this.currentUser, productsCommands);
+                    fromProducts.showFormProducts();
                     break;
                 case 3:
                     ConsoleIO.showMessage("Not implemented");

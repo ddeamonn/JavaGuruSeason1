@@ -13,11 +13,14 @@ public interface ProductDao {
 
     public Product getProductByName(String productName) throws SQLException;
 
+    public Product getProductById(int productId) throws SQLException;
+
     public List getProductsByCategory(String category) throws SQLException;
 
     public boolean checkProductExists(String productName, String productCategory) throws SQLException;
 
     public void setProductStatusInCatalog(int productID, boolean productStatus) throws SQLException;
 
-    public Map getProductMap() throws SQLException;
+    public Map<Integer, Product> getProductMap() throws SQLException;
+
 }

@@ -8,13 +8,15 @@ public class User {
     private String userName;
     private String userPassword;
     private UserRoleTypes userRole;
+    private UserStatus userStatus;
 
 
-    User(int userID, String userName, String userPassword, UserRoleTypes userRole) {
+    User(int userID, String userName, String userPassword, UserRoleTypes userRole, UserStatus userStatus) {
         this.userID = userID;
         this.userName = userName;
         this.userRole = userRole;
         this.userPassword = userPassword;
+        this.userStatus = userStatus;
     }
 
     public int getUserID() {
@@ -32,6 +34,11 @@ public class User {
     public UserRoleTypes getUserRole() {
         return this.userRole;
     }
+
+    public UserStatus getUserStatus() {
+        return this.userStatus;
+    }
+
 
     @Override
     public boolean equals(Object o) {

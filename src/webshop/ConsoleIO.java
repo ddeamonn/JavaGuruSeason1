@@ -24,6 +24,18 @@ public class ConsoleIO {
         }
     }
 
+    public static float getUserInputFloat() {
+        while (true) {
+            try {
+                Scanner sc = new Scanner(System.in);
+                float number = sc.nextFloat();
+                return number;
+            } catch (InputMismatchException e) {
+                ConsoleIO.showMessage("Check your input. Please try again");
+            }
+        }
+    }
+
     public static boolean getYesNo() {
         ConsoleIO.showMessage("Please enter 'y' or 'yes', 'n' or 'no'");
         while (true) {

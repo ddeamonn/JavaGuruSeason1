@@ -46,13 +46,13 @@ public class UserCommands {
     public void disableUser(User user)
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
-        userDao.updateUser(user, user.getUserName(), user.getUserPassword(), user.getUserRole(), Constants.DISABLED);
+        userDao.updateUser(user, user.getUserName(), user.getUserPassword(), user.getUserRole(), UserStatus.DISABLED);
     }
 
     public void enableUser(User user)
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
-        userDao.updateUser(user, user.getUserName(), user.getUserPassword(), user.getUserRole(), Constants.ENABLED);
+        userDao.updateUser(user, user.getUserName(), user.getUserPassword(), user.getUserRole(), UserStatus.ENABLED);
     }
 
     public void addNewUser(User user)
@@ -60,10 +60,10 @@ public class UserCommands {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
     }
 
-    public void addNewUser(String userName, String userPassword, UserRoleTypes userRole)
+    public void addNewUser(String userName, String userPassword, UserRoleTypes userRole, UserStatus userStatus)
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
-        userDao.addUser(userName, userPassword, userRole);
+        userDao.addUser(userName, userPassword, userRole, userStatus);
     }
 
     public User getUser(String userName, String userPassword)
