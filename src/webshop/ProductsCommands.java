@@ -44,7 +44,7 @@ public class ProductsCommands {
     public void disableProductInCatalog(Product product)
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
-        productDao.setProductStatusInCatalog(product.getProductID(), Constants.DISABLED);
+        productDao.setProductStatusInCatalog(product.getProductID(), ProductStatus.DISABLED);
     }
 
     public boolean checkProductExists(String productName, String productCategory)
@@ -56,7 +56,7 @@ public class ProductsCommands {
     public void enableProductInCatalog(Product product)
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
-        productDao.setProductStatusInCatalog(product.getProductID(), Constants.ENABLED);
+        productDao.setProductStatusInCatalog(product.getProductID(), ProductStatus.ENABLED);
     }
 
     public void changeProductPrice(Product product, float newPrice)

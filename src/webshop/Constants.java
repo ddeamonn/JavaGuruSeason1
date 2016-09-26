@@ -18,13 +18,15 @@ public class Constants {
     public static final int BASKET_SHOW_PRODUCTS = 3;
     public static final int BASKET_ADD_PRODUCT = 4;
     public static final int BASKET_REMOVE_PRODUCT = 5;
-    public static final int BASKET_BUY_PRODUCTS = 6;
+    public static final int BASKET_REMOVE_ALL_PRODUCTS = 6;
+    public static final int BASKET_BUY_PRODUCTS = 7;
+
 
     public static final int CATALOG_SHOW_PRODUCTS = 1;
     public static final int CATALOG_ADD_PRODUCT = 2;
     public static final int CATALOG_DISABLE_PRODUCT = 3;
     public static final int CATALOG_ENABLE_PRODUCT = 4;
-    public static final int CATALOG_CHANGE_PRODUCT_PRICE = 11;
+    public static final int CATALOG_CHANGE_PRODUCT_PRICE = 5;
 
     public static final int USER_LIST_USERS = 3;
     public static final int USER_ADD_USER = 4;

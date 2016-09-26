@@ -8,9 +8,9 @@ public class Product {
     private String productName;
     private String productCategory;
     private float productPrice;
-    private boolean productStatus;
+    private ProductStatus productStatus;
 
-    public Product(int productID, String productName, String productCategory, float productPrice, boolean productStatus) {
+    public Product(int productID, String productName, String productCategory, float productPrice, ProductStatus productStatus) {
         this.productID = productID;
         this.productName = productName;
         this.productCategory = productCategory;
@@ -34,7 +34,7 @@ public class Product {
         return this.productPrice;
     }
 
-    public boolean getProductStatus() {
+    public ProductStatus getProductStatus() {
         return this.productStatus;
     }
 

@@ -9,6 +9,7 @@ import java.sql.*;
 
 public class DatabaseFactory {
 
+    private static Connection dbSingleConnection = null;
     private UserDao userDao;
     private ProductDao productDao;
     private SalesDao salesDao;
@@ -18,11 +19,13 @@ public class DatabaseFactory {
     public DatabaseFactory(DatabaseTypes dbType) throws SQLException, ClassNotFoundException {
         switch (dbType) {
             case SQLITE:
-                Connection dbConnection = DriverManager.getConnection(WebShopSettings.DbConnectionString);
-                this.userDao = new SqliteUserDao(dbConnection);
-                this.productDao = new SqliteProductDao(dbConnection);
-                this.salesDao = new SqliteSalesDao(dbConnection);
-                this.reportDao = new SqliteReportDao(dbConnection);
+                if (this.dbSingleConnection == null) {
+                    this.dbSingleConnection = DriverManager.getConnection(WebShopSettings.DbConnectionString);
+                }
+                this.userDao = new SqliteUserDao(dbSingleConnection);
+                this.productDao = new SqliteProductDao(dbSingleConnection);
+                this.salesDao = new SqliteSalesDao(dbSingleConnection);
+                this.reportDao = new SqliteReportDao(dbSingleConnection);
         }
     }
 

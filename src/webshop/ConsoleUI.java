@@ -49,11 +49,13 @@ public class ConsoleUI {
                     this.setNewDbConnectionUser();
                     break;
                 case 2:
-                    FromProducts fromProducts = new FromProducts(this.currentUser, productsCommands);
-                    fromProducts.showFormProducts();
+                    FormProducts formProducts = new FormProducts(this.currentUser, productsCommands);
+                    formProducts.showFormProducts();
                     break;
                 case 3:
-                    ConsoleIO.showMessage("Not implemented");
+                    FormBuySales formBuySales = new FormBuySales(this.currentUser, this.salesCommands,
+                            this.productsCommands);
+                    formBuySales.showFormBuySales();
                     break;
                 case 4:
                     ConsoleIO.showMessage("Not implemented");

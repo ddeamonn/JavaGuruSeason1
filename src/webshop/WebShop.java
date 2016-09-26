@@ -8,14 +8,15 @@ import java.sql.*;
 public class WebShop {
     public static void main (String[] args) {
         try {
+            /*
             Connection dbConnection = DriverManager.getConnection("jdbc:sqlite:src/webshop/dbo/webshop.db");
 
             UserDao userDao = new SqliteUserDao(dbConnection);
             ProductDao productDao = new SqliteProductDao(dbConnection);
             SalesDao salesDao = new SqliteSalesDao(dbConnection);
 
-
             System.out.println("Opened database successfully");
+*/
 
             try {
 /*
@@ -47,7 +48,7 @@ public class WebShop {
 
                 ConsoleIO.showMessage("Welcome " + usr.getUserName());
 
-                UserBasket basket = new UserBasket(usr);
+                HashMapUserBasket basket = new HashMapUserBasket(usr);
 
                 basket.addProduct(productDao.getProductByName("Mixer"));
                 basket.addProduct(productDao.getProductByName("Blender"));

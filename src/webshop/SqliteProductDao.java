@@ -79,7 +79,7 @@ public class SqliteProductDao implements ProductDao {
             String queryProductName = result.getString("Name");
             String queryProductCategory = result.getString("Category");
             int queryProductPrice = result.getInt("Price");
-            boolean queryProductStatus = result.getBoolean("Status");
+            ProductStatus queryProductStatus = ProductStatus.valueOf(result.getString("Status"));
 
             Product product = new Product(queryProductID, queryProductName, queryProductCategory,
                     queryProductPrice, queryProductStatus);
@@ -105,7 +105,7 @@ public class SqliteProductDao implements ProductDao {
             String queryProductName = result.getString("Name");
             String queryProductCategory = result.getString("Category");
             int queryProductPrice = result.getInt("Price");
-            boolean queryProductStatus = result.getBoolean("Status");
+            ProductStatus queryProductStatus = ProductStatus.valueOf(result.getString("Status"));
 
             Product product = new Product(queryProductID, queryProductName, queryProductCategory,
                     queryProductPrice, queryProductStatus);
@@ -146,7 +146,7 @@ public class SqliteProductDao implements ProductDao {
             String queryProductName = result.getString("Name");
             String queryProductCategory = result.getString("Category");
             int queryProductPrice = result.getInt("Price");
-            boolean queryProductStatus = result.getBoolean("Status");
+            ProductStatus queryProductStatus = ProductStatus.valueOf(result.getString("Status"));
 
             Product product = new Product(queryProductID, queryProductName, queryProductCategory,
                     queryProductPrice, queryProductStatus);
@@ -159,13 +159,13 @@ public class SqliteProductDao implements ProductDao {
     }
 
     @Override
-    public void setProductStatusInCatalog(int productID, boolean productStatus) throws SQLException {
+    public void setProductStatusInCatalog(int productID, ProductStatus productStatus) throws SQLException {
 
         PreparedStatement sqlStatement = null;
         String sql = "UPDATE PRODUCTS SET STATUS = ? WHERE (ID=?)";
         sqlStatement = this.dbConnection.prepareStatement(sql);
-        sqlStatement.setInt(1, productID);
-        sqlStatement.setBoolean(2, productStatus);
+        sqlStatement.setString(1, productStatus.toString());
+        sqlStatement.setInt(2, productID);
         sqlStatement.executeUpdate();
     }
 
@@ -186,7 +186,7 @@ public class SqliteProductDao implements ProductDao {
             String queryProductName = result.getString("Name");
             String queryProductCategory = result.getString("Category");
             int queryProductPrice = result.getInt("Price");
-            boolean queryProductStatus = result.getBoolean("Status");
+            ProductStatus queryProductStatus = ProductStatus.valueOf(result.getString("Status"));
 
             Product product = new Product(queryProductID, queryProductName, queryProductCategory,
                     queryProductPrice, queryProductStatus);

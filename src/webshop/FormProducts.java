@@ -10,12 +10,12 @@ import java.util.Map;
  * Created by Amir i Masha on 2016.09.24..
  */
 
-public class FromProducts {
+public class FormProducts {
 
     private ProductsCommands productsCommands;
     private User currentUser;
 
-    public FromProducts(User currentUser, ProductsCommands productsCommands) {
+    public FormProducts(User currentUser, ProductsCommands productsCommands) {
         this.productsCommands = productsCommands;
         this.currentUser = currentUser;
     }
@@ -37,9 +37,6 @@ public class FromProducts {
 
             int usersSelected = ConsoleIO.getUserInputInt();
             switch (usersSelected) {
-                case Constants.EXIT:
-                    toContinue = false;
-                    break;
                 case Constants.CATALOG_SHOW_PRODUCTS:
                     this.showAllProducts();
                     break;
@@ -55,33 +52,37 @@ public class FromProducts {
                 case Constants.CATALOG_CHANGE_PRODUCT_PRICE:
                     this.showSetProductPrice();
                     break;
+                case Constants.EXIT:
+                    toContinue = false;
+                    break;
             }
         }
     }
 
     private void printProductToConsole(Product product) {
         ConsoleIO.showMessage("Product ID: " + product.getProductID() +
-                ". Product: " + product.getProductID() +
+                ". Product: " + product.getProductName() +
                 ". Category: " + product.getProductCategory() +
                 ". Price: " + product.getProductPrice() +
                 ". Status: " + product.getProductStatus()
         );
     }
 
-    private void showAllProducts() throws SQLException {
+    private void printProductsToConsole() throws SQLException {
         try {
-
             Map<Integer, Product> products = this.productsCommands.getProductMapFromCatalog();
-
-            ConsoleIO.showMessage("======== Products in Webshop ========");
             for (Map.Entry<Integer, Product> product : products.entrySet()) {
                 printProductToConsole(product.getValue());
             }
-        } catch (NullPointerException e) {
-            ConsoleIO.showMessage("No product found in product catalog. ");
         } catch (SQLException e) {
             ConsoleIO.showMessage("Failed to list products. Reason: " + e.getMessage());
         }
+    }
+
+
+    public void showAllProducts() throws SQLException {
+        ConsoleIO.showMessage("======== Products in Webshop ========");
+        printProductsToConsole();
     }
 
     private void showAddProductForm() throws SQLException {
@@ -124,8 +125,8 @@ public class FromProducts {
     private void showEnableProductForm() {
         try {
             ConsoleIO.showMessage("======== Enable product in Webshop ========");
-            this.showFormProducts();
-            ConsoleIO.showMessage("Please inter product ID: ");
+            this.printProductsToConsole();
+            ConsoleIO.showMessage("Please enter product ID: ");
             int productID = ConsoleIO.getUserInputInt();
             Product productToEnable = this.productsCommands.getProductById(productID);
             if (productToEnable != null) {
@@ -134,8 +135,6 @@ public class FromProducts {
             } else {
                 ConsoleIO.showMessage("No product with such ID");
             }
-
-
         } catch (SQLException e) {
             ConsoleIO.showMessage("Failed to disable product. Reason: " + e.getMessage());
         }
@@ -144,8 +143,8 @@ public class FromProducts {
     private void showDisableProduct() {
         try {
             ConsoleIO.showMessage("======== Disable product in Webshop ========");
-            this.showFormProducts();
-            ConsoleIO.showMessage("Please inter product ID: ");
+            this.printProductsToConsole();
+            ConsoleIO.showMessage("Please enter product ID: ");
             int productID = ConsoleIO.getUserInputInt();
             Product productToDisable = this.productsCommands.getProductById(productID);
             if (productToDisable != null) {
@@ -154,8 +153,6 @@ public class FromProducts {
             } else {
                 ConsoleIO.showMessage("No product with such ID");
             }
-
-
         } catch (SQLException e) {
             ConsoleIO.showMessage("Failed to disable product. Reason: " + e.getMessage());
         }

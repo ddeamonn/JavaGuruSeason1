@@ -22,6 +22,7 @@ public class SalesCommands {
         Map<Integer, String> allowedMethods = new HashMap<>();
 
         if ((user.getUserRole() == UserRoleTypes.USER) || (user.getUserRole() == UserRoleTypes.ADMIN)) {
+            allowedMethods.put(Constants.BASKET_SHOW_PRODUCTS, "Show product in basket");
             allowedMethods.put(Constants.BASKET_ADD_PRODUCT, "Add product to basket");
             allowedMethods.put(Constants.BASKET_REMOVE_PRODUCT, "Remove product from basket");
             allowedMethods.put(Constants.BASKET_BUY_PRODUCTS, "Buy products in basket");
@@ -33,16 +34,28 @@ public class SalesCommands {
         return allowedMethods;
     }
 
-    public void addProductToBasket(Product product, UserBasket basket) {
-        basket.addProduct(product);
+    public Map<Product, Integer> getProductsFromBasket() throws SQLException {
+        return salesDao.getProductsFromBasket(this.currentUser);
     }
 
-    public void removeProductFromBasket(Product product, UserBasket basket) {
-        basket.removeProduct(product);
+    public Product getProductsFromBasket(Product product) throws SQLException {
+        return salesDao.getProductFromBasket(this.currentUser, product);
     }
 
-    public void buyProductsInBasket(UserBasket basket) throws SQLException {
-        salesDao.buyProductsFromBasket(basket);
+    public void addProductToBasket(Product product) throws SQLException {
+        salesDao.addProductToBasket(this.currentUser, product);
+    }
+
+    public void removeProductFromBasket(Product product) throws SQLException {
+        salesDao.removeProductFromBasket(this.currentUser, product);
+    }
+
+    public void buyProductsInBasket() throws SQLException {
+        salesDao.buyProductsFromBasket(this.currentUser);
+    }
+
+    public void cleanUserBasket() throws SQLException {
+        salesDao.cleanUserBasket(this.currentUser);
     }
 
     public void setCurrentUser(User user) {

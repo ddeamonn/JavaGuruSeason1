@@ -19,7 +19,7 @@ public interface ProductDao {
 
     public boolean checkProductExists(String productName, String productCategory) throws SQLException;
 
-    public void setProductStatusInCatalog(int productID, boolean productStatus) throws SQLException;
+    public void setProductStatusInCatalog(int productID, ProductStatus productStatus) throws SQLException;
 
     public Map<Integer, Product> getProductMap() throws SQLException;
 

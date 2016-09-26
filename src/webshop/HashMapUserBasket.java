@@ -7,12 +7,12 @@ import java.util.LinkedList;
  * Created by Amir on 13.09.2016..
  */
 
-public class UserBasket {
+public class HashMapUserBasket {
 
     private HashMap<Product, Integer> productsInBasket;
     private User basketUser;
 
-    UserBasket(User user) {
+    HashMapUserBasket(User user) {
         this.productsInBasket = new HashMap<>();
         this.basketUser = user;
     }
@@ -26,7 +26,16 @@ public class UserBasket {
     }
 
     public void removeProduct(Product product) {
-        this.productsInBasket.remove(product);
+        if (productsInBasket.containsKey(product)) {
+            if (productsInBasket.get(product) > 0)
+                this.productsInBasket.put(product, productsInBasket.get(product) - 1);
+        } else {
+            this.productsInBasket.remove(product);
+        }
+    }
+
+    public void cleanupBasket() {
+        this.productsInBasket.clear();
     }
 
     public HashMap<Product, Integer> getProductsInBasket() {

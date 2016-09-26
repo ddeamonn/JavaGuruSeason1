@@ -2,6 +2,7 @@ package webshop;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -20,17 +21,94 @@ public class SqliteSalesDao implements SalesDao {
     }
 
     @Override
-    public void addProductToBasket(UserBasket basket, Product product) throws SQLException {
-        basket.addProduct(product);
+    public Map<Product, Integer> getProductsFromBasket(User user) throws SQLException {
+
+        Map<Product, Integer> productMap = new HashMap<>();
+
+        PreparedStatement sqlStatement = null;
+
+        String sql = " select Products.Id as pid, Products.Name as pname, Products.Category as pcategory," +
+                " Products.Price as pprice, Products.Status as pstatus, Basket.Quantity as bquantity" +
+                " from Users, Products, Basket " +
+                " where (Basket.ProductId = Products.Id) and (Basket.UserId = ?)";
+
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        sqlStatement.setInt(1, user.getUserID());
+        ResultSet result = sqlStatement.executeQuery();
+
+        while (result.next()) {
+
+            int queryProductId = result.getInt("pid");
+            String queryProductName = result.getString("pname");
+            String queryProductCategory = result.getString("pcategory");
+            float queryProductPrice = result.getFloat("pprice");
+            int queryProductQuantity = result.getInt("bquantity");
+            ProductStatus queryProductStatus = ProductStatus.valueOf(result.getString("pstatus"));
+
+            Product product = new Product(queryProductId, queryProductName, queryProductCategory,
+                    queryProductPrice, queryProductStatus);
+
+            productMap.put(product, queryProductQuantity);
+        }
+
+        return productMap;
     }
 
     @Override
-    public void buyProductsFromBasket(UserBasket basket) throws SQLException {
+    public Product getProductFromBasket(User user, Product product) throws SQLException {
+
+        Map<Product, Integer> productMap = new HashMap<>();
+
+        PreparedStatement sqlStatement = null;
+
+        String sql = " select Products.Id as pid, Products.Name as pname, Products.Category as pcategory," +
+                " Products.Price as pprice, Products.Status as pstatus, Basket.Quantity as bquantity" +
+                " from Users, Products, Basket " +
+                " where (Basket.ProductId = ?) and (Basket.UserId = ?)";
+
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        sqlStatement.setInt(1, product.getProductID());
+        sqlStatement.setInt(2, user.getUserID());
+        ResultSet result = sqlStatement.executeQuery();
+
+        while (result.next()) {
+
+            int queryProductId = result.getInt("pid");
+            String queryProductName = result.getString("pname");
+            String queryProductCategory = result.getString("pcategory");
+            float queryProductPrice = result.getFloat("pprice");
+            int queryProductQuantity = result.getInt("bquantity");
+            ProductStatus queryProductStatus = ProductStatus.valueOf(result.getString("pstatus"));
+
+            Product dbProduct = new Product(queryProductId, queryProductName, queryProductCategory,
+                    queryProductPrice, queryProductStatus);
+
+            return dbProduct;
+        }
+
+        return null;
+    }
+
+    @Override
+    public void addProductToBasket(User user, Product product) throws SQLException {
+
+        PreparedStatement sqlStatement = null;
+        String sql = "INSERT INTO BASKET(USERID, PRODUCTID) VALUES (?, ?)";
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        sqlStatement.setInt(1, user.getUserID());
+        sqlStatement.setInt(2, product.getProductID());
+
+        sqlStatement.executeUpdate();
+    }
+
+    @Override
+    public void buyProductsFromBasket(User user) throws SQLException {
 
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 
-        User buyer = basket.getBasketUser();
-        HashMap<Product, Integer> products = basket.getProductsInBasket();
+        User buyer = user;
+
+        Map<Product, Integer> products = this.getProductsFromBasket(user);
 
         int saleID = 1;
 
@@ -49,5 +127,24 @@ public class SqliteSalesDao implements SalesDao {
 
             sqlStatement.executeUpdate();
         }
+    }
+
+    @Override
+    public void removeProductFromBasket(User user, Product product) throws SQLException {
+        PreparedStatement sqlStatement = null;
+        String sql = "DELETE FROM BASKET WHERE (USERID = ?) AND (PRODUCTID = ?)";
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        sqlStatement.setInt(1, user.getUserID());
+        sqlStatement.setInt(1, product.getProductID());
+        sqlStatement.executeUpdate();
+    }
+
+    @Override
+    public void cleanUserBasket(User user) throws SQLException {
+        PreparedStatement sqlStatement = null;
+        String sql = "DELETE FROM BASKET WHERE USERID = ?";
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        sqlStatement.setInt(1, user.getUserID());
+        sqlStatement.executeUpdate();
     }
 }
