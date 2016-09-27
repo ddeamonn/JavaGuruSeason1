@@ -33,6 +33,8 @@ public class Constants {
     public static final int USER_ENABLE_USER = 5;
     public static final int USER_DISABLE_USER = 6;
 
+    public static final int REPORT_ALL_SALES = 1;
+
     public static final int EXIT = 20;
 
     public static final String USER_LOGIN = "UserLogin";

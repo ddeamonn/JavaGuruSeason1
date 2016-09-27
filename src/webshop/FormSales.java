@@ -99,8 +99,10 @@ public class FormSales {
             ConsoleIO.showMessage("Please enter product id to add to basket:");
             int userSelected = ConsoleIO.getUserInputInt();
             Product product = this.productsCommands.getProductById(userSelected);
-            this.salesCommands.addProductToBasket(product);
-            ConsoleIO.showMessage("Product added to the basket");
+            if (product != null) {
+                this.salesCommands.addProductToBasket(product);
+                ConsoleIO.showMessage("Product added to the basket");
+            } else ConsoleIO.showMessage("Failed to select product with this id");
         } catch (SQLException e) {
             ConsoleIO.showMessage("Failed to add product to basket: Reason" + e.getMessage());
         }
@@ -115,13 +117,13 @@ public class FormSales {
             ConsoleIO.showMessage("Please enter product id to remove from basket:");
             int userSelected = ConsoleIO.getUserInputInt();
             Product product = this.productsCommands.getProductById(userSelected);
-            this.salesCommands.removeProductFromBasket(product);
-            ConsoleIO.showMessage("Product removed from basket");
+            if (product != null) {
+                this.salesCommands.removeProductFromBasket(product);
+                ConsoleIO.showMessage("Product removed from basket");
+            } else ConsoleIO.showMessage("Failed to select product with this id");
         } catch (SQLException e) {
             ConsoleIO.showMessage("Failed to remove product to basket: Reason" + e.getMessage());
         }
 
     }
-
-
 }

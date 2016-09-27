@@ -26,19 +26,17 @@ public class ReportsCommands {
         }
 
         if (user.getUserRole() == UserRoleTypes.ADMIN) {
-            allowedMethods.put(Constants.USER_ADD_USER, "Add user to webshop database");
-            allowedMethods.put(Constants.USER_LIST_USERS, "Show all users in webshop database");
-            allowedMethods.put(Constants.USER_ENABLE_USER, "Enable user in webshop database");
-            allowedMethods.put(Constants.USER_DISABLE_USER, "Disable user in webshop database");
+            allowedMethods.put(Constants.REPORT_ALL_SALES, "Show all sales");
         }
 
         return allowedMethods;
     }
 
-    public void showAllSales()
+    public Map<Integer, Float> getAllSales()
             throws SQLException, SecurityException {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
-        List allSales = reportDao.getSalesWithSum();
+        return reportDao.getSalesWithSum();
+
     }
 
     public void setCurrentUser(User user) {

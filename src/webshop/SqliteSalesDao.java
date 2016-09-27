@@ -129,17 +129,24 @@ public class SqliteSalesDao implements SalesDao {
         java.sql.Date currentDate = new java.sql.Date(Calendar.getInstance().getTimeInMillis());
 
         User buyer = user;
+        int saleID = 1;
 
         Map<Product, Integer> products = this.getProductsFromBasket(user);
 
-        int saleID = 1;
+        PreparedStatement sqlStatement = null;
+
+        String sql = "SELECT MAX(SaleID) as SaleID FROM SALES";
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        ResultSet result = sqlStatement.executeQuery();
+        while (result.next()) {
+            saleID = result.getInt("SaleID");
+        }
 
         for (Map.Entry<Product, Integer> product : products.entrySet()) {
-            PreparedStatement sqlStatement = null;
-            String sql = "INSERT INTO SALES(SaleID, DateTime, UserID, ProductID, Quantity, Price, SaleSum) " +
+            sql = "INSERT INTO SALES(SaleID, DateTime, UserID, ProductID, Quantity, Price, SaleSum) " +
                     "values (?, ?, ?, ?, ?, ?, ?)";
             sqlStatement = this.dbConnection.prepareStatement(sql);
-            sqlStatement.setInt(1, saleID);
+            sqlStatement.setInt(1, saleID + 1);
             sqlStatement.setDate(2, currentDate);
             sqlStatement.setInt(3, buyer.getUserID());
             sqlStatement.setInt(4, product.getKey().getProductID());

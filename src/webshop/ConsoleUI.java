@@ -58,7 +58,8 @@ public class ConsoleUI {
                     formSales.showFormBuySales();
                     break;
                 case 4:
-                    ConsoleIO.showMessage("Not implemented");
+                    FromReports formReports = new FromReports(this.currentUser, this.reportsCommands);
+                    formReports.showReportForm();
                     break;
                 case Constants.EXIT:
                     toContinue = false;
