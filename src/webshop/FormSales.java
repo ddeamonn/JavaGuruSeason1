@@ -7,13 +7,13 @@ import java.util.*;
 /**
  * Created by Amir i Masha on 2016.09.24..
  */
-public class FormBuySales {
+public class FormSales {
 
     private SalesCommands salesCommands;
     private ProductsCommands productsCommands;
     private User currentUser;
 
-    public FormBuySales(User user, SalesCommands salesCommands, ProductsCommands productsCommands) {
+    public FormSales(User user, SalesCommands salesCommands, ProductsCommands productsCommands) {
         this.currentUser = user;
         this.salesCommands = salesCommands;
         this.productsCommands = productsCommands;

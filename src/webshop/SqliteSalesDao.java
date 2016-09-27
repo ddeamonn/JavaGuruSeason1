@@ -57,8 +57,6 @@ public class SqliteSalesDao implements SalesDao {
     @Override
     public Product getProductFromBasket(User user, Product product) throws SQLException {
 
-        Map<Product, Integer> productMap = new HashMap<>();
-
         PreparedStatement sqlStatement = null;
 
         String sql = " select Products.Id as pid, Products.Name as pname, Products.Category as pcategory," +

@@ -3,17 +3,21 @@ CREATE TABLE Users (
     Name     TEXT    NOT NULL
                      UNIQUE,
     Role     TEXT    NOT NULL,
-    Password TEXT
+    Password TEXT,
+    Status   STRING
 );
 
+
 CREATE TABLE Products (
-    Id           INTEGER PRIMARY KEY AUTOINCREMENT,
-    Name         TEXT,
-    Category     TEXT,
-    Price        INTEGER,
-    Availability BOOLEAN NOT NULL
-                         DEFAULT true
+    Id       INTEGER PRIMARY KEY AUTOINCREMENT,
+    Name     TEXT,
+    Category TEXT,
+    Price    INTEGER,
+    Status   STRING  NOT NULL
+                     DEFAULT ENABLED
 );
+
+
 
 CREATE TABLE Sales (
     ID        INTEGER  PRIMARY KEY AUTOINCREMENT,
@@ -32,4 +36,12 @@ CREATE TABLE Sales (
         ProductID
     )
     REFERENCES [Products.ID]
+);
+
+CREATE TABLE Basket (
+    Id        INTEGER PRIMARY KEY AUTOINCREMENT,
+    UserId    INTEGER REFERENCES Users (ID),
+    ProductId INTEGER REFERENCES Sales (ID),
+    Quantity  INTEGER DEFAULT (0) 
+                      NOT NULL
 );

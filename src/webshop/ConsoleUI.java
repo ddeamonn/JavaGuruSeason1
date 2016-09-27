@@ -53,9 +53,9 @@ public class ConsoleUI {
                     formProducts.showFormProducts();
                     break;
                 case 3:
-                    FormBuySales formBuySales = new FormBuySales(this.currentUser, this.salesCommands,
+                    FormSales formSales = new FormSales(this.currentUser, this.salesCommands,
                             this.productsCommands);
-                    formBuySales.showFormBuySales();
+                    formSales.showFormBuySales();
                     break;
                 case 4:
                     ConsoleIO.showMessage("Not implemented");
