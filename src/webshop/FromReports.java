@@ -32,6 +32,9 @@ public class FromReports {
 
             int usersSelected = ConsoleIO.getUserInputInt();
             switch (usersSelected) {
+                case Constants.REPORT_ALL_SALES_BY_USER:
+                    this.showAllSalesByUser();
+                    break;
                 case Constants.REPORT_ALL_SALES:
                     this.showAllSales();
                     break;
@@ -46,6 +49,19 @@ public class FromReports {
         ConsoleIO.showMessage("======== All Sales  ========");
         try {
             Map<Integer, Float> allSales = this.reportsCommands.getAllSales();
+            for (Map.Entry<Integer, Float> sales : allSales.entrySet()) {
+                ConsoleIO.showMessage("Sale ID: " + sales.getKey() + " and Sum: " + sales.getValue());
+            }
+        } catch (SQLException e) {
+            ConsoleIO.showMessage("Failed to get reports data. Reason: " + e.getMessage());
+        }
+    }
+
+    private void showAllSalesByUser() throws SQLException {
+        ConsoleIO.showMessage("======== All Sales ========");
+        ConsoleIO.showMessage("User: " + this.currentUser.getUserName());
+        try {
+            Map<Integer, Float> allSales = this.reportsCommands.getSalesByUser(this.currentUser);
             for (Map.Entry<Integer, Float> sales : allSales.entrySet()) {
                 ConsoleIO.showMessage("Sale ID: " + sales.getKey() + " and Sum: " + sales.getValue());
             }

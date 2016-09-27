@@ -8,4 +8,6 @@ import java.util.*;
  */
 public interface ReportDao {
     public Map<Integer, Float> getSalesWithSum() throws SQLException;
+
+    public Map<Integer, Float> getSalesByUser(User user) throws SQLException;
 }

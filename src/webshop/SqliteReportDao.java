@@ -33,4 +33,22 @@ public class SqliteReportDao implements ReportDao {
         return sales;
 
     }
+
+    @Override
+    public Map<Integer, Float> getSalesByUser(User user) throws SQLException {
+
+        Map<Integer, Float> sales = new HashMap<>();
+        PreparedStatement sqlStatement = null;
+
+        String sql = "SELECT SaleID as SID, SUM(SaleSum) as Sum FROM SALES WHERE USERID = ? GROUP BY SaleID";
+        sqlStatement = this.dbConnection.prepareStatement(sql);
+        sqlStatement.setInt(1, user.getUserID());
+        ResultSet result = sqlStatement.executeQuery();
+        while (result.next()) {
+            sales.put(result.getInt("SID"), result.getFloat("Sum"));
+        }
+
+        return sales;
+
+    }
 }

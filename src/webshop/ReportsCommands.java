@@ -23,6 +23,7 @@ public class ReportsCommands {
         Map<Integer, String> allowedMethods = new HashMap<>();
 
         if ((user.getUserRole() == UserRoleTypes.USER) || (user.getUserRole() == UserRoleTypes.ADMIN)) {
+            allowedMethods.put(Constants.REPORT_ALL_SALES_BY_USER, "Show all sales for user");
         }
 
         if (user.getUserRole() == UserRoleTypes.ADMIN) {
@@ -37,6 +38,12 @@ public class ReportsCommands {
         PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
         return reportDao.getSalesWithSum();
 
+    }
+
+    public Map<Integer, Float> getSalesByUser(User user)
+            throws SQLException, SecurityException {
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
+        return reportDao.getSalesByUser(this.currentUser);
     }
 
     public void setCurrentUser(User user) {
