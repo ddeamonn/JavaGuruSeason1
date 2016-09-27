@@ -90,13 +90,37 @@ public class SqliteSalesDao implements SalesDao {
     @Override
     public void addProductToBasket(User user, Product product) throws SQLException {
 
-        PreparedStatement sqlStatement = null;
-        String sql = "INSERT INTO BASKET(USERID, PRODUCTID) VALUES (?, ?)";
-        sqlStatement = this.dbConnection.prepareStatement(sql);
-        sqlStatement.setInt(1, user.getUserID());
-        sqlStatement.setInt(2, product.getProductID());
+        Product basketProduct = this.getProductFromBasket(user, product);
+        int quantity = 1;
+        if (basketProduct != null) {
 
-        sqlStatement.executeUpdate();
+            PreparedStatement sqlStatement = null;
+            String sql = "SELECT QUANTITY FROM BASKET WHERE (PRODUCTID = ?) AND (USERID = ?)";
+            sqlStatement = this.dbConnection.prepareStatement(sql);
+            sqlStatement.setInt(1, product.getProductID());
+            sqlStatement.setInt(2, user.getUserID());
+            ResultSet result = sqlStatement.executeQuery();
+            while (result.next()) {
+                quantity = result.getInt("QUANTITY");
+            }
+
+            sql = "UPDATE BASKET SET QUANTITY = ? WHERE (USERID = ?) AND (PRODUCTID = ?)";
+            sqlStatement = this.dbConnection.prepareStatement(sql);
+            sqlStatement.setInt(1, quantity + 1);
+            sqlStatement.setInt(2, user.getUserID());
+            sqlStatement.setInt(3, product.getProductID());
+            sqlStatement.executeUpdate();
+        } else {
+            String sql = "INSERT INTO BASKET(USERID, PRODUCTID, QUANTITY) VALUES (?, ?, ?)";
+            PreparedStatement sqlStatement = null;
+            sqlStatement = this.dbConnection.prepareStatement(sql);
+            sqlStatement.setInt(1, user.getUserID());
+            sqlStatement.setInt(2, product.getProductID());
+            sqlStatement.setInt(3, product.getProductID());
+            sqlStatement.setInt(3, quantity);
+            sqlStatement.executeUpdate();
+        }
+
     }
 
     @Override
@@ -133,7 +157,7 @@ public class SqliteSalesDao implements SalesDao {
         String sql = "DELETE FROM BASKET WHERE (USERID = ?) AND (PRODUCTID = ?)";
         sqlStatement = this.dbConnection.prepareStatement(sql);
         sqlStatement.setInt(1, user.getUserID());
-        sqlStatement.setInt(1, product.getProductID());
+        sqlStatement.setInt(2, product.getProductID());
         sqlStatement.executeUpdate();
     }
 

@@ -67,7 +67,7 @@ public class ProductsCommands {
 
     public Product getProductById(int productId)
             throws SQLException, SecurityException {
-        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.ADMIN);
+        PermissionSecurity.checkRequiredUserPermission(this.currentUser, UserRoleTypes.USER);
         return productDao.getProductById(productId);
     }
 

@@ -52,6 +52,7 @@ public class SalesCommands {
 
     public void buyProductsInBasket() throws SQLException {
         salesDao.buyProductsFromBasket(this.currentUser);
+        salesDao.cleanUserBasket(this.currentUser);
     }
 
     public void cleanUserBasket() throws SQLException {

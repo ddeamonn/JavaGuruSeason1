@@ -48,7 +48,9 @@ public class FormSales {
                     this.showProductsInBasket();
                     break;
                 case Constants.BASKET_BUY_PRODUCTS:
-                    this.showBuyForm();
+                    if (!this.salesCommands.getProductsFromBasket().isEmpty())
+                        this.showBuyForm();
+                    else ConsoleIO.showMessage("No products in basket");
                     break;
                 case Constants.EXIT:
                     toContinue = false;
@@ -63,9 +65,10 @@ public class FormSales {
         this.showProductsInBasket();
         ConsoleIO.showMessage("Do you want to buy this products?");
         if (ConsoleIO.getYesNo() == true) {
-            ConsoleIO.showMessage("Products are bought.");
+            this.salesCommands.buyProductsInBasket();
+            ConsoleIO.showMessage("Products are bought");
         } else {
-            ConsoleIO.showMessage("Canceled");
+            ConsoleIO.showMessage("Products not bought");
         }
     }
 
@@ -74,12 +77,10 @@ public class FormSales {
 
         Map<Product, Integer> products = this.salesCommands.getProductsFromBasket();
 
-        int i = 1;
         for (Map.Entry<Product, Integer> product : products.entrySet()) {
-            ConsoleIO.showMessage(i + ". Product: " + product.getKey().getProductName() +
+            ConsoleIO.showMessage("ID: " + product.getKey().getProductID() + ". Product: " + product.getKey().getProductName() +
                     ". Quantity: " + product.getValue() +
                     ". Price per quantity: " + (product.getKey().getProductPrice() * product.getValue()));
-            i++;
         }
 
         ConsoleIO.showMessage("Total sum of products in basket: " + products.entrySet().stream().
@@ -107,25 +108,19 @@ public class FormSales {
 
     private void showRemoveProductFromBasket() throws SQLException {
 
-        ConsoleIO.showMessage("==== Products in user basket ====");
-
-        Map<Product, Integer> products = this.salesCommands.getProductsFromBasket();
-
-        int i = 1;
-
-        for (Map.Entry<Product, Integer> product : products.entrySet()) {
-            ConsoleIO.showMessage(i + ". Product: " + product.getKey().getProductName() +
-                    ". Quantity: " + product.getValue() +
-                    ". Price per quantity: " + (product.getKey().getProductPrice() * product.getValue()));
-            i++;
+        try {
+            ConsoleIO.showMessage("==== Remove product from basket ====");
+            FormProducts formProducts = new FormProducts(this.currentUser, this.productsCommands);
+            this.showProductsInBasket();
+            ConsoleIO.showMessage("Please enter product id to remove from basket:");
+            int userSelected = ConsoleIO.getUserInputInt();
+            Product product = this.productsCommands.getProductById(userSelected);
+            this.salesCommands.removeProductFromBasket(product);
+            ConsoleIO.showMessage("Product removed from basket");
+        } catch (SQLException e) {
+            ConsoleIO.showMessage("Failed to remove product to basket: Reason" + e.getMessage());
         }
 
-        ConsoleIO.showMessage("Total sum of products in basket: " + products.entrySet().stream().
-                map(map -> {
-                    return map.getKey().getProductPrice() * map.getValue();
-                }).
-                mapToDouble(Float::doubleValue).sum()
-        );
     }
 
 
