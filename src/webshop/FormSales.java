@@ -100,8 +100,10 @@ public class FormSales {
             int userSelected = ConsoleIO.getUserInputInt();
             Product product = this.productsCommands.getProductById(userSelected);
             if (product != null) {
-                this.salesCommands.addProductToBasket(product);
-                ConsoleIO.showMessage("Product added to the basket");
+                if (product.getProductStatus() == ProductStatus.ENABLED) {
+                    this.salesCommands.addProductToBasket(product);
+                    ConsoleIO.showMessage("Product added to the basket");
+                } else ConsoleIO.showMessage("Failed to select product with this id. Product is diasbled");
             } else ConsoleIO.showMessage("Failed to select product with this id");
         } catch (SQLException e) {
             ConsoleIO.showMessage("Failed to add product to basket: Reason" + e.getMessage());
