@@ -1,7 +1,8 @@
 package webshop;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Amir on 24.09.2016..

@@ -43,22 +43,22 @@ public class ConsoleUI {
                 int usersSelected = ConsoleIO.getUserInputInt();
                 switch (usersSelected) {
                     case 1:
-                        FormUser userForm = new FormUser(this.currentUser, userCommands);
+                        UserUI userForm = new FormUser(this.currentUser, userCommands);
                         userForm.showFormUser();
                         this.currentUser = userForm.getCurrentUser();
                         this.setNewDbConnectionUser();
                         break;
                     case 2:
-                        FormProducts formProducts = new FormProducts(this.currentUser, productsCommands);
+                        ProductsUI formProducts = new FormProducts(this.currentUser, productsCommands);
                         formProducts.showFormProducts();
                         break;
                     case 3:
-                        FormSales formSales = new FormSales(this.currentUser, this.salesCommands,
+                        SalesUI formSales = new FormSales(this.currentUser, this.salesCommands,
                                 this.productsCommands);
-                        formSales.showFormBuySales();
+                        formSales.showFormSales();
                         break;
                     case 4:
-                        FromReports formReports = new FromReports(this.currentUser, this.reportsCommands);
+                        ReportsUI formReports = new FromReports(this.currentUser, this.reportsCommands);
                         formReports.showReportForm();
                         break;
                     case Constants.EXIT:

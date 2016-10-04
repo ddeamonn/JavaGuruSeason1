@@ -1,7 +1,5 @@
 package webshop;
 
-import java.sql.*;
-
 /**
  * Created by Amir on 06.09.2016..
  */

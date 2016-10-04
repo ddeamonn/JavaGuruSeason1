@@ -1,7 +1,5 @@
 package webshop;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.opt.Const;
-
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
@@ -10,7 +8,7 @@ import java.util.Map;
  * Created by Amir i Masha on 2016.09.24..
  */
 
-public class FormProducts {
+public class FormProducts implements ProductsUI {
 
     private ProductsCommands productsCommands;
     private User currentUser;

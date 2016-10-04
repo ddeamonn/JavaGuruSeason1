@@ -6,7 +6,7 @@ import java.util.Map;
 /**
  * Created by Amir on 27.09.2016..
  */
-public class FromReports {
+public class FromReports implements ReportsUI {
 
     private ReportsCommands reportsCommands;
     private User currentUser;

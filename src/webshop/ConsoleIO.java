@@ -1,6 +1,7 @@
 package webshop;
 
-import java.util.*;
+import java.util.InputMismatchException;
+import java.util.Scanner;
 
 /**
  * Created by Amir i Masha on 2016.09.18..
@@ -66,8 +67,6 @@ public class ConsoleIO {
             }
         }
     }
-
-
 
 
 }

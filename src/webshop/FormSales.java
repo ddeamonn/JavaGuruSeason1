@@ -1,13 +1,13 @@
 package webshop;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.Map;
 
 
 /**
  * Created by Amir i Masha on 2016.09.24..
  */
-public class FormSales {
+public class FormSales implements SalesUI {
 
     private SalesCommands salesCommands;
     private ProductsCommands productsCommands;
@@ -19,7 +19,7 @@ public class FormSales {
         this.productsCommands = productsCommands;
     }
 
-    public void showFormBuySales() throws SQLException {
+    public void showFormSales() throws SQLException {
         boolean toContinue = true;
         while (toContinue) {
 

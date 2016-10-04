@@ -1,7 +1,11 @@
 package webshop;
 
-import java.sql.*;
-import java.util.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by Amir i Masha on 2016.09.20..
